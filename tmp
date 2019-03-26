@@ -1,0 +1,8 @@
+def get_data(device):
+    r4 = sess.post('https://api.owencloud.ru//v1/device/events-log-backward/63934',headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(auth.json()['token'])})
+    last_event = r4.json()
+
+    ts = int(last_event[0]['start_dt'])
+
+    print(devs[last_event[0]['device_id']], last_event[0]['message'], last_event[0]['data'][0]['v'],
+              datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S'))
