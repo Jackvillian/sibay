@@ -1,3 +1,5 @@
 requests
 python-telegram-bot
 PySocks
+celery>=4.2.2
+redis

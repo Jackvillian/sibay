@@ -1,0 +1,32 @@
+version: '2'
+services:
+  web_app_vb:
+    build:
+      context: ./
+      dockerfile: web_app_vb_
+    ports:
+      - "8089:8089"
+    links:
+      - redis:redisdb
+  app_tg:
+    build:
+      context: ./
+      dockerfile: app_tg_
+    links:
+      - redis:redisdb
+  wup_app:
+    build:
+      context: ./
+      dockerfile: wup_app_
+    links:
+      - redis:redisdb
+  async_worker:
+    build:
+      context: ./
+      dockerfile: worker_
+    links:
+      - redis:redisdb
+  redis:
+    image: redis:latest
+    #ports:
+     # - "6379:6379" # map port to none standard port, to avoid conflicts with locally installed mongodb.
