@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-
-exec celery worker -A celery_app
+cd /usr/src/app && exec celery  -A worker_app worker -E

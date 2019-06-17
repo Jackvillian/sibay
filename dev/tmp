@@ -1,0 +1,26 @@
+def get_data(device):
+    r4 = sess.post('https://api.owencloud.ru//v1/device/events-log-backward/63934',headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(auth.json()['token'])})
+    last_event = r4.json()
+
+    ts = int(last_event[0]['start_dt'])
+
+    print(devs[last_event[0]['device_id']], last_event[0]['message'], last_event[0]['data'][0]['v'],
+              datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S'))
+
+
+              d2c11e3e139b14618c0c05992dad10d5
+
+
+
+INFO:yowsup.common.http.warequest:b'{"status":"ok","login":"79687501194","type":"new","edge_routing_info":"CAUIAg==","chat_dns_domain":"fb","pw":"RgyGRfXqX8HyRC882dfDpHy3RbA=","expiration":4444444444.0,"kind":"free","price":"$0.99","cost":"0.99","currency":"USD","price_expiration":1554319297}\n'
+pw: b'RgyGRfXqX8HyRC882dfDpHy3RbA='
+status: b'ok'
+cost: b'0.99'
+expiration: 4444444444.0
+kind: b'free'
+type: b'new'
+price_expiration: 1554319297
+price: b'$0.99'
+currency: b'USD'
+login: b'79687501194'
+(sibay) MacBook-Pro-jackv:yowsup jackv$

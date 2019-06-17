@@ -1,0 +1,11 @@
+---
+- name: cloning project
+  git:
+    repo: git@github.com:mylogin/hello.git
+    dest: /tmp/build
+- name: create configs
+  template: src=templates/config.ini dest=/tmp/build/monitor_apps/src/config.ini
+
+- name: pulling images
+
+- name: composer up

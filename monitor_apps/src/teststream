@@ -1,0 +1,60 @@
+import cv2
+import matplotlib.pyplot as plt
+from numpy import ndarray
+import sys
+import sys
+import os
+from datetime import datetime
+import celery_config
+from worker_app import dnn
+cv2.useOptimized()
+first_frame = None
+cap = cv2.VideoCapture("http://localhost:8090/cam-north.mjpeg")
+
+#cap.set(3,800)
+#cap.set(4,600)
+#cap.set(15, 0.1)
+while(True):
+    if (cap.isOpened() == False):
+        print("Error opening video stream or file")
+    # Capture frame-by-frame
+    ret,frame = cap.read()
+    if not ret:
+        print("disconnected!")
+        break
+    # Our operations on the frame come here
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    ImgBlur = cv2.GaussianBlur(gray, (19, 19), 0)
+    if first_frame  is None:
+        first_frame = ImgBlur # collect the reference frame as the first video feed frame
+        continue
+    deltaFrame = cv2.absdiff(first_frame, ImgBlur)
+    threshFrame = cv2.threshold(deltaFrame, 30, 255, cv2.THRESH_BINARY)[1]
+    threshFrame = cv2.dilate(threshFrame, None, iterations=3)
+    (_, cnts, _) = cv2.findContours(threshFrame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for contour in cnts:
+        if cv2.contourArea(contour) < 1000:
+            # excluding too small contours. Set 10000 (100x100 pixels) for objects close to camera
+            continue
+        status = 1
+        # obtain the corresponding bounding rectangle of our detected contour
+        (x, y, w, h) = cv2.boundingRect(contour)
+
+        # superimpose a rectangle on the identified contour in our original colour image
+        # (x,y) is the top left corner, (x+w, y+h) is the bottom right corner
+        # (0,255,0) is colour green and 3 is the thickness of the rectangle edges
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        file_name=str(datetime.now().timestamp())+".png"
+        cv2.imwrite(file_name, frame)
+        dnn.delay(file_name)
+    # Display the resulting frame
+        #plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        cv2.imshow('origin', frame)
+        #cv2.imshow('frame_delta',threshFrame)
+        #cv2.waitKey(1)
+# When everything done, release the capture
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+             break
+cap.release()
+cv2.destroyAllWindows()

@@ -1,31 +1,33 @@
 version: '2'
 services:
-  web_app_vb:
-    build:
-      context: ./
-      dockerfile: web_app_vb_
-    ports:
-      - "8089:8089"
+
+
+  push_app:
+    image: push_app:latest
+    volumes:
+        - ./src:/usr/src/app
     links:
       - redis:redisdb
-  app_tg:
-    build:
-      context: ./
-      dockerfile: app_tg_
+
+
+
+  bot_app:
+    image: bot_app:latest
+    volumes:
+        - ./src:/usr/src/app
     links:
       - redis:redisdb
-  wup_app:
-    build:
-      context: ./
-      dockerfile: wup_app_
+
+
+
+  messenger_worker:
+    image: celery_app:latest
+    volumes:
+        - ./src:/usr/src/app
     links:
       - redis:redisdb
-  async_worker:
-    build:
-      context: ./
-      dockerfile: worker_
-    links:
-      - redis:redisdb
+
+
   redis:
     image: redis:latest
     #ports:

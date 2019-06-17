@@ -2,8 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d5c8f364-5a24-46d3-8d3c-fd97948786bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/monitor.py" beforeDir="false" afterPath="$PROJECT_DIR$/monitor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ansible/roles/deploy/tasks/main.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ansible/roles/deploy/templates/config.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/solartest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/tmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev/vison.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/bot_app/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/bot_app/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/push_app/supervisor.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/bot_app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/celery_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/config.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/push_app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/teststream" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/monitor_apps/src/worker_dnn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sibay.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sibay.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/celery_app/Dokerfile" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/celery_app/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/celery_app/celery_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/src/worker_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/celery_app/entrypoint.sh" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/celery_app/entrypoint.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/celery_app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/celery_app/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/push_app/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/push_app/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/push_app/push_app.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/monitor_apps/push_app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/monitor_apps/push_app/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solartest.py" beforeDir="false" afterPath="$PROJECT_DIR$/ansible/ansible.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teststream" beforeDir="false" afterPath="$PROJECT_DIR$/ansible/deploy.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vison.py" beforeDir="false" afterPath="$PROJECT_DIR$/ansible/inventory/hosts" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,11 +42,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="monitor.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/monitor.py">
+      <file leaf-file-name="push_app.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/monitor_apps/src/push_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="71" selection-start-line="13" selection-start-column="71" selection-end-line="13" selection-end-column="71" />
+            <state relative-caret-position="-461">
+              <caret line="43" column="15" selection-start-line="43" selection-start-column="15" selection-end-line="43" selection-end-column="15" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -26,25 +54,91 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tmp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp">
+      <file leaf-file-name="ansible.cfg" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ansible/ansible.cfg">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+            <state relative-caret-position="209">
+              <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="deploy.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ansible/deploy.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" column="49" lean-forward="true" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hosts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ansible/inventory/hosts">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="main.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ansible/roles/deploy/tasks/main.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="80" selection-start-line="6" selection-start-column="80" selection-end-line="6" selection-end-column="80" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/monitor_apps/src/config.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="57" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="connection.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/sibay/lib/python3.5/site-packages/kombu/connection.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="430" selection-start-line="430" selection-end-line="430" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ansible/roles/deploy/templates/config.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" selection-start-line="11" selection-end-line="11" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/requirements.txt">
+        <entry file="file://$PROJECT_DIR$/monitor_apps/celery_app/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+            <state relative-caret-position="120">
+              <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="requirements.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/monitor_apps/push_app/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,17 +146,65 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/tmp" />
-        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/app/worker_" />
+        <option value="$PROJECT_DIR$/app/src/app_whatsup.py" />
+        <option value="$PROJECT_DIR$/app/src/requirements.txt" />
+        <option value="$PROJECT_DIR$/app/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/app_vb.py" />
+        <option value="$PROJECT_DIR$/app/src/web_app_vb.py" />
+        <option value="$PROJECT_DIR$/vb_api.py" />
         <option value="$PROJECT_DIR$/monitor.py" />
+        <option value="$PROJECT_DIR$/vison.py" />
+        <option value="$PROJECT_DIR$/video_worker/Dockerfile" />
+        <option value="$PROJECT_DIR$/video_worker/ffserver.conf" />
+        <option value="$PROJECT_DIR$/ffmpeg_worker/Dockerfile" />
+        <option value="$PROJECT_DIR$/ffmpeg_worker/supervisor.conf" />
+        <option value="$PROJECT_DIR$/solartest.py" />
+        <option value="$PROJECT_DIR$/ffmpeg_worker/ffserver.conf" />
+        <option value="$PROJECT_DIR$/ffmpeg_worker/translation.sh" />
+        <option value="$PROJECT_DIR$/astral.py" />
+        <option value="$PROJECT_DIR$/app/src/async_worker.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/Dokerfile" />
+        <option value="$PROJECT_DIR$/app/entrypoint.sh" />
+        <option value="$PROJECT_DIR$/monitor_apps/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/celery_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/celery_config.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/push_app/push_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/push_app/celery_config.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/push_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/worker_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/push_app/Dockerfile" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/worker_dnn.py" />
+        <option value="$PROJECT_DIR$/teststream" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/teststream" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/bot_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/messanger_app/supervisor.conf" />
+        <option value="$PROJECT_DIR$/monitor_apps/messanger_app/Dockerfile" />
+        <option value="$PROJECT_DIR$/monitor_apps/messanger_app/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/celery_config.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/monitor_apps/bot_app/Dockerfile" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/Dockerfile" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/entrypoint.sh" />
+        <option value="$PROJECT_DIR$/monitor_apps/push_app/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/bot_app/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/config.ini" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/worker_app.py" />
+        <option value="$PROJECT_DIR$/monitor_apps/celery_app/requirements.txt" />
+        <option value="$PROJECT_DIR$/monitor_apps/src/push_app.py" />
+        <option value="$PROJECT_DIR$/ansible/roles/deploy/templates/config.ini" />
+        <option value="$PROJECT_DIR$/ansible/ansible.cfg" />
+        <option value="$PROJECT_DIR$/ansible/deploy.yml" />
+        <option value="$PROJECT_DIR$/ansible/roles/deploy/tasks/main.yml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1614" />
-    <option name="y" value="25" />
-    <option name="width" value="1451" />
-    <option name="height" value="1001" />
+    <option name="x" value="171" />
+    <option name="y" value="154" />
+    <option name="width" value="1680" />
+    <option name="height" value="721" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -76,6 +218,42 @@
               <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
               <item name="sibay" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="bootstrap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="ansible" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+              <item name="deploy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="monitor_apps" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sibay" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sibay" type="462c0819:PsiDirectoryNode" />
+              <item name="monitor_apps" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -84,7 +262,25 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/jackv/work/sibay/app_vb.py" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/monitor_apps/bot_app" />
+      <recent name="$PROJECT_DIR$/monitor_apps/messanger_app" />
+      <recent name="$PROJECT_DIR$/monitor_apps/celery_app" />
+      <recent name="$PROJECT_DIR$/monitor_apps" />
+      <recent name="$PROJECT_DIR$/monitor_apps/push_app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dev" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/monitor_apps/celery_app" />
+      <recent name="$PROJECT_DIR$/monitor_apps/celery_app/config" />
+      <recent name="$PROJECT_DIR$/monitor_apps/src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -98,28 +294,111 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="monitor" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.push_app">
+    <configuration name="bot_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="sibay" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/sibaymon/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/monitor_apps/src" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/monitor.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/monitor_apps/src/bot_app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="push_app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="sibay" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/monitor_apps/celery_app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/monitor_apps/src/push_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="push_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="sibay" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/monitor_apps/push_app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/monitor_apps/src/push_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="solartest" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="sibay" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dev/solartest.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="teststream" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="sibay" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/monitor_apps/src/teststream" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.teststream" />
+      <item itemvalue="Python.push_app" />
+      <item itemvalue="Python.push_app (1)" />
+      <item itemvalue="Python.solartest" />
+      <item itemvalue="Python.bot_app" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.monitor" />
+        <item itemvalue="Python.push_app" />
+        <item itemvalue="Python.bot_app" />
+        <item itemvalue="Python.teststream" />
+        <item itemvalue="Python.push_app (1)" />
+        <item itemvalue="Python.solartest" />
       </list>
     </recent_temporary>
   </component>
@@ -137,80 +416,324 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1614" y="25" width="1451" height="1001" extended-state="0" />
+    <frame x="171" y="154" width="1680" height="721" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24940476" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32901832" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="right" id="Jenkins" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24948311" />
-      <window_info anchor="right" id="R Packages" order="3" />
-      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.45285934" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Jenkins" order="3" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="right" id="R Packages" order="3" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" id="Jenkins" order="3" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45285934" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24940476" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="R Graphics" order="4" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="R Packages" order="5" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/monitor.py">
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/solartest.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/celery_config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/worker_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        <state relative-caret-position="1110">
+          <caret line="83" column="38" lean-forward="true" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/push_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/teststream">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/worker_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="32" lean-forward="true" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/supervisor.conf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/solartest.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/celery_config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/worker_dnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/push_app/tasks_celery_app.py" />
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/celery_config.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/push_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="58" lean-forward="true" selection-start-line="10" selection-start-column="58" selection-end-line="10" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/supervisor.conf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/test.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/worker_dnn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dev/solartest.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/1559836272.680692.png" />
+    <entry file="file://$PROJECT_DIR$/1559836273.063929.png" />
+    <entry file="file://$PROJECT_DIR$/1559836273.718413.png" />
+    <entry file="file://$PROJECT_DIR$/1559836289.946567.png" />
+    <entry file="file://$PROJECT_DIR$/1559836295.949007.png" />
+    <entry file="file://$PROJECT_DIR$/1559836304.848034.png" />
+    <entry file="file://$PROJECT_DIR$/1559836737.241674.png" />
+    <entry file="file://$PROJECT_DIR$/monitor_apps/push_app/supervisor.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="33" column="15" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/ffmpeg/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" selection-start-line="9" selection-end-line="9" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/push_app/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/teststream">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/bot_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/celery_app/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="27" lean-forward="true" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/celery_app/entrypoint.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="54" selection-start-line="1" selection-start-column="54" selection-end-line="1" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/bot_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/bot_app/supervisor.conf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/opencv_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/bot_app/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="32" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/celery_config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/worker_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1811">
+          <caret line="32" column="145" selection-start-line="32" selection-start-column="145" selection-end-line="32" selection-end-column="145" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/push_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/celery_app/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="12" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/push_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-461">
+          <caret line="43" column="15" selection-start-line="43" selection-start-column="15" selection-end-line="43" selection-end-column="15" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tmp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="39" lean-forward="true" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/ansible/inventory/hosts">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tmp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/monitor.py">
+    <entry file="file://$PROJECT_DIR$/ansible/deploy.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
-          <caret line="13" column="71" selection-start-line="13" selection-start-column="71" selection-end-line="13" selection-end-column="71" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+          <caret line="13" column="49" lean-forward="true" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ansible/roles/deploy/tasks/main.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="80" selection-start-line="6" selection-start-column="80" selection-end-line="6" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/monitor_apps/src/config.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" selection-start-line="1" selection-end-line="1" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/sibay/lib/python3.5/site-packages/kombu/connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="430" selection-start-line="430" selection-end-line="430" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ansible/roles/deploy/templates/config.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" selection-start-line="11" selection-end-line="11" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ansible/ansible.cfg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
         </state>
       </provider>
     </entry>

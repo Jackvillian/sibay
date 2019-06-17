@@ -5,3 +5,4 @@ redis
 skyfield
 pytz
 pandas
+configparser
