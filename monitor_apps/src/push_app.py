@@ -39,7 +39,7 @@ def callback_HCL_5_minutes(context):
                context.bot.send_message(chat_id='@AIR_sibay',
                                         text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
                                             'street'] + "\n\r``` Текущее значение прибора:" + message[
-                                                 'value'] + "\n\rДата фиксации:" + message['time'] + "``` ",
+                                                 'value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",
                                         parse_mode='MARKDOWN')
                print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
                     'street'] + "\n\r``` Текущее значение прибора:" + message[
@@ -58,7 +58,7 @@ def callback_SO2_5_minutes(context):
             context.bot.send_message(chat_id='@AIR_sibay',
                                      text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
                                            'street'] + "\n\r``` Текущее значение прибора:" + message[
-                                              'value'] + "\n\rДата фиксации:" + message['time'] + "``` ",
+                                              'value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",
                                      parse_mode='MARKDOWN')
 
 
