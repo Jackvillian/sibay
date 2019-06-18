@@ -3,6 +3,7 @@
   git:
     repo: https://github.com/Jackvillian/sibay.git
     dest: /tmp/build
+    force: yes
 - name: create configs
   template: src=templates/config.ini dest=/tmp/build/monitor_apps/src/config.ini
 
