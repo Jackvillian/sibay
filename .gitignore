@@ -1,3 +1,4 @@
 .idea/
 __pycache__/
 dev/
+monitor_apps/src/config.ini

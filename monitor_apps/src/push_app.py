@@ -30,7 +30,7 @@ def callback_every_1_minutes(context):
     sol = sol.get(timeout=100)
     print(sol)
 
-def callback_every_55_minutes(context):
+def callback_HCL_5_minutes(context):
     sens = sensors_task_HCL.delay()
     sens = sens.get(timeout=100)
     for message in sens:
@@ -47,7 +47,7 @@ def callback_every_55_minutes(context):
         else:
             pass
 
-def callback_every_5_minutes(context):
+def callback_SO2_5_minutes(context):
     sens=sensors_task_SO2.delay()
     sens=sens.get(timeout=100)
     for message in sens:
@@ -73,17 +73,17 @@ def callback_every_5_minutes(context):
 
 
 
-def callback_every_2_hours(context):
+def callback_weather_2_hours(context):
     messagetext=weather_task.apply_async()
 
-    #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,
-    #                                parse_mode='MARKDOWN')
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,
+                                    parse_mode='MARKDOWN')
     print(messagetext.get(timeout=100))
 
-job_minute = jobq.run_repeating(callback_every_55_minutes, interval=300, first=0)
-job_minute = jobq.run_repeating(callback_every_5_minutes, interval=300, first=0)
-job_minute = jobq.run_repeating(callback_every_1_minutes, interval=60, first=0)
-job_hour = jobq.run_repeating(callback_every_2_hours, interval=7200, first=0)
-updater.dispatcher.add_handler(CommandHandler('hello', hello))
+job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
+job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
+job_hour = jobq.run_repeating(callback_weather_2_hours, interval=7200, first=0)
+
+
 updater.start_polling()
 updater.idle()

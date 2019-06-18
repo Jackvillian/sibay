@@ -1,0 +1,34 @@
+version: '2'
+services:
+
+
+  push_app:
+    image: jacvmos/push_app:{{tag[0]}}
+    volumes:
+        - ./monitor_apps/src:/usr/src/app
+    links:
+      - redis:redisdb
+
+
+
+  bot_app:
+    image: jacvmos/bot_app:{{tag[0]}}
+    volumes:
+        - ./monitor_apps/src:/usr/src/app
+    links:
+      - redis:redisdb
+
+
+
+  messenger_worker:
+    image: jacvmos/celery_app:{{tag[0]}}
+    volumes:
+        - ./monitor_apps/src:/usr/src/app
+    links:
+      - redis:redisdb
+
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

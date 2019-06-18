@@ -1,11 +1,20 @@
 ---
 - name: cloning project
   git:
-    repo: git@github.com:mylogin/hello.git
+    repo: https://github.com/Jackvillian/sibay.git
     dest: /tmp/build
 - name: create configs
   template: src=templates/config.ini dest=/tmp/build/monitor_apps/src/config.ini
 
 - name: pulling images
+  shell: docker pull {{item}}:{{tag[0]}}
+  with_items:
+      - jacvmos/bot_app
+      - jacvmos/push_app
+      - jacvmos/celery_app
 
-- name: composer up
+- name: create composer
+  template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml
+
+- name: create containers
+  shell: cd /tmp/build/ && docker-compose up -d

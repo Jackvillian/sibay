@@ -3,27 +3,27 @@ services:
 
 
   push_app:
-    image: push_app:latest
+    image: jacvmos/push_app:0.0.1
     volumes:
-        - ./src:/usr/src/app
+        - ./monitor_apps/src:/usr/src/app
     links:
       - redis:redisdb
 
 
 
   bot_app:
-    image: bot_app:latest
+    image: jacvmos/bot_app:0.0.1
     volumes:
-        - ./src:/usr/src/app
+        - ./monitor_apps/src:/usr/src/app
     links:
       - redis:redisdb
 
 
 
   messenger_worker:
-    image: celery_app:latest
+    image: jacvmos/celery_app:0.0.1
     volumes:
-        - ./src:/usr/src/app
+        - ./monitor_apps/src:/usr/src/app
     links:
       - redis:redisdb
 
