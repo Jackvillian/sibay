@@ -75,10 +75,10 @@ def callback_SO2_5_minutes(context):
 
 def callback_weather_2_hours(context):
     messagetext=weather_task.apply_async()
+    messagetext=messagetext.get(timeout=100)
+    print(messagetext)
+    context.bot.send_message(chat_id='@AIR_sibay', text=weather_text,parse_mode='MARKDOWN')
 
-    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,
-                                    parse_mode='MARKDOWN')
-    print(messagetext.get(timeout=100))
 
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
 job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
