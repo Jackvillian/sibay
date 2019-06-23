@@ -89,7 +89,9 @@ def sensors_task_HCL():
                 if not "Ошибка" in get_data(p['id'])[0]['values'][0]['f']:
                     response['street'] = device_list(auth())[dev]
                     response['value'] = get_data(p['id'])[0]['values'][0]['f']
-                    response['time'] = datetime.utcfromtimestamp(int(get_data(p['id'])[0]['values'][0]['d'])).strftime('%Y-%m-%d %H:%M:%S')
+                    tz = timezone('Asia/Yekaterinburg')
+                    utc = datetime.utcfromtimestamp(int(get_data(p['id'])[0]['values'][0]['d']))
+                    response['time'] = utc.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
         response_list.append(response)
     for resp in response_list:
         if not resp:
@@ -110,7 +112,9 @@ def sensors_task_SO2():
                 if not "Ошибка" in get_data(p['id'])[0]['values'][0]['f']:
                     response['street'] = device_list(auth())[dev]
                     response['value'] = get_data(p['id'])[0]['values'][0]['f']
-                    response['time'] = datetime.utcfromtimestamp(int(get_data(p['id'])[0]['values'][0]['d'])).strftime('%Y-%m-%d %H:%M:%S')
+                    tz = timezone('Asia/Yekaterinburg')
+                    utc = datetime.utcfromtimestamp(int(get_data(p['id'])[0]['values'][0]['d']))
+                    response['time'] = utc.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
         response_list.append(response)
     for resp in response_list:
         if not resp:
