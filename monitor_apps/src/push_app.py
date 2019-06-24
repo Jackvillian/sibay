@@ -32,40 +32,24 @@ def callback_every_1_minutes(context):
 
 def callback_HCL_5_minutes(context):
     sens = sensors_task_HCL.delay()
-    sens = sens.get(timeout=100)
+    sens = sens.get(timeout=300)
     for message in sens:
         overload = float(message['value']) * 10
         if float(message['value']) >= 0.1:
-               context.bot.send_message(chat_id='@AIR_sibay',
-                                        text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
-                                            'street'] + "\n\r``` Текущее значение прибора:" + message[
-                                                 'value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",
-                                        parse_mode='MARKDOWN')
-               print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
-                    'street'] + "\n\r``` Текущее значение прибора:" + message[
-                      ' value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
+               context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+               print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message[' value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
 
 def callback_SO2_5_minutes(context):
     sens=sensors_task_SO2.delay()
-    sens=sens.get(timeout=100)
+    sens=sens.get(timeout=300)
     for message in sens:
 
         overload = float(message['value']) * 2
         if float(message['value'])>= 0.6:
-
-            context.bot.send_message(chat_id='@AIR_sibay',
-                                     text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
-                                           'street'] + "\n\r``` Текущее значение прибора:" + message[
-                                              'value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",
-                                     parse_mode='MARKDOWN')
-
-
-            print("*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message[
-                                         'street'] + "\n\r``` Текущее значение прибора:" + message[
-                                              'value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
-
+            context.bot.send_message(chat_id='@AIR_sibay',text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+            print("*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
 
@@ -74,10 +58,10 @@ def callback_SO2_5_minutes(context):
 
 
 def callback_weather_2_hours(context):
-    messagetext=weather_task.apply_async()
-    messagetext=messagetext.get(timeout=100)
+    messagetext=weather_task.delay()
+    messagetext=messagetext.get(timeout=300)
     print(messagetext)
-    context.bot.send_message(chat_id='@AIR_sibay', text=weather_text,parse_mode='MARKDOWN')
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 
 
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
