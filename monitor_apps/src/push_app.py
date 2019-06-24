@@ -37,7 +37,7 @@ def callback_HCL_5_minutes(context):
         overload = float(message['value']) * 10
         if float(message['value']) >= 0.1:
                context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
-               print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message[' value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
+               print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
 
