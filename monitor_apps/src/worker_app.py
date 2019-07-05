@@ -40,6 +40,13 @@ def device_list(auth):
         devs[devices['id']]=devices['name']
     return devs
 
+def device_status(auth):
+    r=sess.post('https://api.owencloud.ru/v1/device/index',headers={'Content-Type':'application/json', 'Authorization': 'Bearer {}'.format(auth['token'])})
+    status={}
+    for devices in r.json():
+        status[devices['id']]=devices['status']
+    return status
+
 def get_data(param):
     payload = {"ids": param}
     data=sess.post('https://api.owencloud.ru/v1/parameters/last-data',headers={'Content-Type':'application/json', 'Authorization': 'Bearer {}'.format(auth()['token'])},json=payload)
@@ -76,6 +83,10 @@ def solar_time():
     result.append(sunset_utc.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S'))
     return result
 
+@app.task
+def status_devices():
+    status_list=device_status(auth())
+    print(status_list)
 
 
 @app.task
