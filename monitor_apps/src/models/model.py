@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://air:airsibay@localhost/air', pool_recycle=3600)
-from sqlalchemy import Table, Column, Integer, String, MetaData,DateTime,Sequence
+from sqlalchemy import Table, Column, Integer, String, MetaData,DateTime,Sequence,Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -50,17 +50,19 @@ class Doc(Base):
     name = Column(String(80))
     path = Column(String(80))
     timestamp = Column(String(40))
+    archive = Column(Boolean, unique=False, server_default='1', nullable=False)
 
 
-    def __init__(self,href,name,timestamp,path):
+    def __init__(self,href,name,timestamp,path,archive):
         self.href = href
         self.name = name
         self.path = path
         self.timestamp = timestamp
+        self.archive = archive
 
 
     def __repr__(self):
-        return "<Doc('%s','%s', '%s', '%s')>" % (self.href,self.name ,self.path, self.timestamp)
+        return "<Doc('%s','%s', '%s', '%s','%s')>" % (self.href,self.name ,self.path, self.timestamp, self.archive)
 
 
 #Base.create_all(engine)

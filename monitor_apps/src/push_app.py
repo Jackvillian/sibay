@@ -63,6 +63,7 @@ def callback_weather_2_hours(context):
     print(messagetext)
     context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 
+
 def callback_docs_1_hours(context):
     doclist = doc_downloader.delay()
     doclist = doclist.get(timeout=2700)
@@ -70,13 +71,13 @@ def callback_docs_1_hours(context):
     for msg in doclist:
         messagetext=messagetext+msg+"\n\r"
     messagetext=messagetext+"загрузить все необходимые документы можно при помощи бота @sibay_mon_bot"
-    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+    #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
 
 job_hour = jobq.run_repeating(callback_docs_1_hours, interval=300, first=0)
-job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
-job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
-job_hours = jobq.run_repeating(callback_weather_2_hours, interval=7200, first=0)
+#job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
+#job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
+#job_hours = jobq.run_repeating(callback_weather_2_hours, interval=7200, first=0)
 
-
+print("push_app is started...")
 updater.start_polling()
 updater.idle()

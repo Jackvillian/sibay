@@ -1,9 +1,10 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler,Filters
 from telegram import KeyboardButton, ReplyKeyboardMarkup
-from models.model import Base ,engine,User,Locations
+from models.model import Base ,engine,User,Locations, Doc
 from worker_app import print_hello, sensors_task_SO2, sensors_task_HCL, weather_task, solar_time, status_devices
 from geopy.distance import geodesic
 from sqlalchemy.orm import sessionmaker
+import os.path
 import sqlalchemy
 import celery_config
 from datetime import datetime, timedelta
@@ -28,21 +29,27 @@ dispatcher = updater.dispatcher
 
 def start(update, context):
     #print(update)
+
     user_data=update.message.chat
     find_user=session.query(User).filter_by(userid=user_data['id'], chattype="private").first()
     session.close()
     if find_user is not None:
+        home_keyboard = KeyboardButton(text="/home")
+        custom_keyboard = [[home_keyboard]]
         print(find_user.first_name)
-        text_message="Привет "+find_user.first_name+" ! я рад что тебе неравнодушен наш город !\n\rчтобы начать набери: /home"
-
-        context.bot.send_message(chat_id=update.message.chat_id, text=text_message)
+        text_message="Привет "+find_user.first_name+" ! я рад что тебе неравнодушен наш город !\n\rчтобы начать нажми: /home"
+        reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+        context.bot.send_message(chat_id=update.message.chat_id, text=text_message, reply_markup=reply_markup)
     else:
+        home_keyboard = KeyboardButton(text="/home")
+        custom_keyboard = [[home_keyboard]]
         tg_us = User(user_data['first_name'],user_data['last_name'],user_data['username'],user_data['id'], user_data['type'])
         session.add(tg_us)
         session.commit()
         session.close()
-        text_message = "Привет новичек я помогу тебе разобраться !\n\rчтобы начать набери:: /home"
-        context.bot.send_message(chat_id=update.message.chat_id, text=text_message)
+        text_message = "Привет новичек я помогу тебе разобраться !\n\rчтобы начать нажми: /home \n\r далее выбери раздел помощь"
+        reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+        context.bot.send_message(chat_id=update.message.chat_id, text=text_message , reply_markup=reply_markup)
 
 
 def create_point(update, context):
@@ -92,7 +99,10 @@ def resp_location(update, context):
     geo_center = (config.get('geolocation','center_latitude'),config.get('geolocation','center_longitude') )
     geo_user=(update.message.location.latitude,update.message.location.longitude)
     distance=geodesic(geo_center, geo_user).kilometers
-    if distance > config.get('geolocation','max_distance'):
+
+    max_d=config.get('geolocation','max_distance')
+    print(distance,max_d)
+    if distance > max_d:
         reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
         messagetext="Ух... как вы далеко забрались!\n\rК сожалению радиус меток "+config.get('geolocation','max_distance')+" км"
         context.bot.send_message(chat_id=update.message.chat_id, text=messagetext, reply_markup=reply_markup)
@@ -107,9 +117,16 @@ def resp_location(update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text="метка принята", reply_markup=reply_markup)
 
 
-def report():
-    pass
-
+def report(update, context):
+    home_keyboard = KeyboardButton(text="/home Вернуться в начало")
+    custom_keyboard = [[home_keyboard]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+    context.bot.send_message(chat_id=update.message.chat_id,text="Результаты исследования проб воздуха(официальные данные)", reply_markup=reply_markup)
+    last_avail_docs = session.query(Doc).filter_by(archive='0').limit(3).all()
+    for d in last_avail_docs:
+        print(d.path)
+        print(os.path.exists(d.path))
+        context.bot.sendDocument(chat_id=update.message.chat_id, document=open(d.path, 'rb'))
 
 def home(update, context):
     status_keyboard = KeyboardButton(text="/status")
@@ -136,11 +153,16 @@ def status(update, context):
     messagetext = status_devices.delay()
     messagetext2 = messagetext.get(timeout=300)
 
+def help():
+    pass
+
+
+
 start_handler = CommandHandler('start', start)
 status_handler = CommandHandler('status', status)
 weather_handler=CommandHandler('weather', weather_resp)
 help_handler = CommandHandler('help', help)
-home_handler = CommandHandler('home', help)
+home_handler = CommandHandler('home', home)
 map_handler= CommandHandler('map', create_point)
 report_handler = CommandHandler('report', report)
 req_handler = MessageHandler(Filters.entity("hashtag"), req_location)
@@ -154,6 +176,6 @@ dispatcher.add_handler(status_handler)
 dispatcher.add_handler(help_handler)
 dispatcher.add_handler(home_handler)
 dispatcher.add_handler(report_handler)
-print("bot is started ...")
+print("bot_app is started ...")
 updater.start_polling()
 updater.idle()

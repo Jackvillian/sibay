@@ -41,6 +41,8 @@ def downloader(path,url,name):
     with open(path+name, 'wb') as f:
         f.write(r.content)
 
+
+
 def auth():
     au=sess.post('https://api.owencloud.ru/v1/auth/open',json={"login":config.get('owencloud','user'),"password":config.get('owencloud','password')})
     return au.json()
@@ -211,11 +213,11 @@ def doc_downloader():
             find_docs = session.query(Doc).filter_by(name=upl.a['title']).first()
             if find_docs is None:
                 ts = datetime.now()
-                doc_insert = Doc(upl.a['href'], upl.a['title'],ts , "data/docs/"+upl.a['title'])
+                doc_insert = Doc(upl.a['href'], upl.a['title'],ts , "data/docs/"+upl.a['title'],0)
                 session.add(doc_insert)
                 session.commit()
-                downloader("data/docs",maior_site_uri+upl.a['href'],upl.a['title'])
-                print(maior_site_uri+upl.a['href'])
+                downloader("data/docs/",maior_site_uri+upl.a['href'],upl.a['title'])
+                print("working ",maior_site_uri+upl.a['href'])
                 doc_list.append(upl.a['title'])
     session.close()
     print(doc_list)
