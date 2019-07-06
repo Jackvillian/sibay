@@ -8,7 +8,7 @@ import os
 import celery_config
 import configparser
 
-from worker_app import print_hello, sensors_task_SO2, sensors_task_HCL, weather_task, solar_time
+from worker_app import print_hello, sensors_task_SO2, sensors_task_HCL, weather_task, solar_time, doc_downloader
 
 
 
@@ -63,10 +63,19 @@ def callback_weather_2_hours(context):
     print(messagetext)
     context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 
+def callback_docs_1_hours(context):
+    doclist = doc_downloader.delay()
+    doclist = doclist.get(timeout=2700)
+    messagetext = "*Получены новые документы от\n\rмежведомственного оперативного штаба\n\r"
+    for msg in doclist:
+        messagetext=messagetext+msg+"\n\r"
+    messagetext=messagetext+"загрузить все необходимые документы можно при помощи бота @sibay_mon_bot"
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
 
+job_hour = jobq.run_repeating(callback_docs_1_hours, interval=300, first=0)
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
 job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
-job_hour = jobq.run_repeating(callback_weather_2_hours, interval=7200, first=0)
+job_hours = jobq.run_repeating(callback_weather_2_hours, interval=7200, first=0)
 
 
 updater.start_polling()

@@ -16,6 +16,7 @@
 
 - name: create composer
   template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml
-
+- name: removing old containers
+  shell: cd /tmp/build/ && docker-compose down
 - name: create containers
   shell: cd /tmp/build/ && docker-compose up -d

@@ -1,6 +1,9 @@
 version: '2'
 services:
 
+  nginx:
+    image: nginx
+
 
   push_app:
     image: jacvmos/push_app:0.0.1

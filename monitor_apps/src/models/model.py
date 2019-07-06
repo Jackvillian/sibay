@@ -43,5 +43,25 @@ class Locations(Base):
     def __repr__(self):
         return "<Locations('%s','%s', '%s', '%s', '%s')>" % ( self.userid, self.longitude, self.latitude, self.timestamp, self.context)
 
+class Doc(Base):
+    __tablename__ = 'doc'
+    id = Column(Integer, primary_key=True)
+    href = Column(String(200))
+    name = Column(String(80))
+    path = Column(String(80))
+    timestamp = Column(String(40))
+
+
+    def __init__(self,href,name,timestamp,path):
+        self.href = href
+        self.name = name
+        self.path = path
+        self.timestamp = timestamp
+
+
+    def __repr__(self):
+        return "<Doc('%s','%s', '%s', '%s')>" % (self.href,self.name ,self.path, self.timestamp)
+
+
 #Base.create_all(engine)
 Base.metadata.create_all(engine)

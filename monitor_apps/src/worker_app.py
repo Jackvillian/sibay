@@ -1,5 +1,11 @@
 from __future__ import absolute_import, unicode_literals
+from models.model import Base ,engine,User,Locations,Doc
+from celery.schedules import crontab
+from sqlalchemy.orm import sessionmaker
 from celery_config import app
+from bs4 import BeautifulSoup
+from lxml import html
+import urllib3
 import requests
 from skyfield import api
 from skyfield import almanac
@@ -11,11 +17,14 @@ import sys
 import os
 import configparser
 
-
+Session = sessionmaker(bind=engine)
+session = Session()
+http = urllib3.PoolManager()
 config = configparser.ConfigParser()
 config_path=os.path.join(os.path.dirname(__file__), 'config.ini')
 config.read(config_path)
-
+maior_site=config.get('maior_site','doc_url')
+maior_site_uri=config.get('maior_site','site')
 #REQUEST_KWARGS={
 #    'proxy_url': 'socks5://config.get('proxy','host'):config.get('proxy','port')',
 #    'urllib3_proxy_kwargs': {
@@ -27,7 +36,10 @@ s_city = "Sibay,RU"
 appid=config.get('openweathermap.org','key')
 sess=requests.Session()
 
-
+def downloader(path,url,name):
+    r = requests.get(url)
+    with open(path+name, 'wb') as f:
+        f.write(r.content)
 
 def auth():
     au=sess.post('https://api.owencloud.ru/v1/auth/open',json={"login":config.get('owencloud','user'),"password":config.get('owencloud','password')})
@@ -44,8 +56,11 @@ def device_status(auth):
     r=sess.post('https://api.owencloud.ru/v1/device/index',headers={'Content-Type':'application/json', 'Authorization': 'Bearer {}'.format(auth['token'])})
     status={}
     for devices in r.json():
-        status[devices['id']]=devices['status']
-    return status
+        uri='https://api.owencloud.ru/v1/device/'+str(devices['id'])
+        r2 = sess.post(uri,headers={'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(auth['token'])})
+
+
+    return r2.json()
 
 def get_data(param):
     payload = {"ids": param}
@@ -85,8 +100,9 @@ def solar_time():
 
 @app.task
 def status_devices():
-    status_list=device_status(auth())
-    print(status_list)
+    for dev in device_list(auth()).keys():
+        for p in get_params(dev, auth()):
+            print(p['name'])
 
 
 @app.task
@@ -181,3 +197,31 @@ def weather_task():
     presure_mm = float(weather['list'][0]['main']['pressure']) * float(0.750063755419211)
     result_msg="*Погода Cибай*\n\rТемпература: "+str(weather['list'][0]['main']['temp'])+"\n\rВлажность: "+str(weather['list'][0]['main']['humidity'])+"\n\rДавление: "+str(round(presure_mm,2))+"\n\rВетер: ``` \n\r направление: "+wind_comp+" \n\r скорость: "+str(weather['list'][0]['wind']['speed'])+"\n\r```"
     return result_msg
+
+
+
+@app.task
+def doc_downloader():
+    response = http.request('GET', maior_site)
+    soup = BeautifulSoup(response.data, 'html.parser')
+    upload_list = soup.find_all('span', {'class': 'news__info-value'}, 'a')
+    doc_list=[]
+    for upl in upload_list:
+        if upl.a is not None:
+            find_docs = session.query(Doc).filter_by(name=upl.a['title']).first()
+            if find_docs is None:
+                ts = datetime.now()
+                doc_insert = Doc(upl.a['href'], upl.a['title'],ts , "data/docs/"+upl.a['title'])
+                session.add(doc_insert)
+                session.commit()
+                downloader("data/docs",maior_site_uri+upl.a['href'],upl.a['title'])
+                print(maior_site_uri+upl.a['href'])
+                doc_list.append(upl.a['title'])
+    session.close()
+    print(doc_list)
+    return doc_list
+
+
+
+
+
