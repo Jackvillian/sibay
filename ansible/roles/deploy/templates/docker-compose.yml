@@ -38,3 +38,10 @@ services:
       - "6379:6379"
   mysql:
     image: mysql:{{mysql_tag[0]}}
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD= {{mysql_root[0]}}
+      - MYSQL_DATABASE = {{mysql_db[0]}}
+      - MYSQL_USER ={{mysql_user[0]}}
+      - MYSQL_PASSWORD = {{mysql_password[0]}}

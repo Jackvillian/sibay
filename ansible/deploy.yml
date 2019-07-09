@@ -5,6 +5,10 @@
   vars:
     tag:
       - 0.0.1
+    redis_tag:
+      - latest
+    mysql_tag:
+      - latest
   vars_files:
       - vars/secret.yml
 
