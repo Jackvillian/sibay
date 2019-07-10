@@ -171,8 +171,10 @@ def weather_task():
     wr = requests.get("http://api.openweathermap.org/data/2.5/find",
                       params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
     weather=wr.json()
-
-    unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
+    try:
+        unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
+    except:
+        print('none cache')
     ts = datetime.now()
     expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
     if expired < (ts - timedelta(minutes=60)):
