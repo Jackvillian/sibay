@@ -1,5 +1,11 @@
+import configparser
+import os.path
+config = configparser.ConfigParser()
+config_path=os.path.join(os.path.dirname(__file__), '../config.ini')
+config.read(config_path)
 from sqlalchemy import create_engine
-engine = create_engine('mysql+pymysql://air:airsibay@localhost/air', pool_recycle=3600)
+mydb='mysql+pymysql://'+config.get('mysql','user')+':'+config.get('mysql','password')+'@'+config.get('mysql','host')+'/'+config.get('mysql','db')
+engine = create_engine(mydb, pool_recycle=3600)
 from sqlalchemy import Table, Column, Integer, String, MetaData,DateTime,Sequence,Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
@@ -22,7 +28,7 @@ class User(Base):
         self.chattype = chattype
 
     def __repr__(self):
-        return "<User('%s','%s', '%s', '%s', '%s')>" % (self.first_name,self.last_name ,self.username, self.userid, self.chattype)
+        return '{} {} {} {} {}'.format(self.first_name,self.last_name ,self.username, self.userid, self.chattype)
 
 class Locations(Base):
     __tablename__ = 'locations'
@@ -31,17 +37,34 @@ class Locations(Base):
     longitude = Column(String(10))
     latitude = Column(String(10))
     timestamp = (Column(String(60)))
-    context_point = (Column(String(10)))
+    context = (Column(String(10)))
+    archive = Column(Boolean, unique=False, server_default='1', nullable=False)
 
 
-    def __init__(self,userid, longitude, latitude,timestamp, context_point):
+    def __init__(self,userid, longitude, latitude,timestamp, context,archive):
         self.userid = userid
         self.longitude = longitude
         self.latitude = latitude
         self.timestamp = timestamp
-        self.context_point = context_point
+        self.context = context
+        self.archive = archive
     def __repr__(self):
-        return "<Locations('%s','%s', '%s', '%s', '%s')>" % ( self.userid, self.longitude, self.latitude, self.timestamp, self.context)
+        return '{} {} {} {} {} {}'.format( self.userid, self.longitude, self.latitude, self.timestamp, self.context, self.archive)
+
+class Maps(Base):
+    __tablename__ = 'maps'
+    id = Column(Integer, primary_key=True)
+    path = Column(String(80))
+    timestamp = (Column(String(60)))
+    archive = Column(Boolean, unique=False, server_default='1', nullable=False)
+
+    def __init__(self,path,timestamp,archive):
+        self.path = path
+        self.timestamp = timestamp
+        self.archive = archive
+    def __repr__(self):
+        return '{} {} {}'.format( self.path, self.timestamp, self.archive)
+
 
 class Doc(Base):
     __tablename__ = 'doc'
@@ -62,7 +85,7 @@ class Doc(Base):
 
 
     def __repr__(self):
-        return "<Doc('%s','%s', '%s', '%s','%s')>" % (self.href,self.name ,self.path, self.timestamp, self.archive)
+        return '{} {} {} {} {}'.format(self.href,self.name ,self.path, self.timestamp, self.archive)
 
 
 #Base.create_all(engine)
