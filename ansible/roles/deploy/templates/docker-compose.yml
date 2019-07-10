@@ -1,45 +1,35 @@
 version: '2'
 services:
 
-  nginx_app:
-    image: nginx:{{nginx_tag[0]}}
-    volume: .monitor_apps/data:/usr/share/nginx/html
-
   push_app:
     image: jacvmos/push_app:{{tag[0]}}
     volumes:
-        - ./monitor_apps/src:/usr/src/app
+        - /app/src:/usr/src/app
+        - /app/data/:/usr/src/app/data
     links:
       - redis:redisdb
-
-
 
   bot_app:
     image: jacvmos/bot_app:{{tag[0]}}
     volumes:
-        - ./monitor_apps/src:/usr/src/app
+        - /app/src:/usr/src/app
+        - /app/data/:/usr/src/app/data
     links:
       - redis:redisdb
       - mysql:mysqldb
 
-
-
   messenger_worker:
     image: jacvmos/celery_app:{{tag[0]}}
     volumes:
-        - ./monitor_apps/src:/usr/src/app
-        - ./monitor_apps/data/:/usr/src/app/maps
+        - /app/src:/usr/src/app
+        - /app/data/:/usr/src/app/data
     links:
       - redis:redisdb
 
   redis:
     image: redis:{{redis_tag[0]}}
-    ports:
-      - "6379:6379"
   mysql:
     image: mysql:{{mysql_tag[0]}}
-    ports:
-      - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD= {{mysql_root[0]}}
       - MYSQL_DATABASE = {{mysql_db[0]}}

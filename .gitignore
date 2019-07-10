@@ -3,4 +3,5 @@ __pycache__/
 dev/
 monitor_apps/src/data/
 monitor_apps/src/config.ini
+monitor_apps/src/init.txt
 ansible/inventory/hosts

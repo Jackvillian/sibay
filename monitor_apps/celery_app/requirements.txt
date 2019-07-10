@@ -7,3 +7,11 @@ redis
 skyfield
 python-telegram-bot==12.0.0b1
 configparser
+sqlalchemy
+bs4
+lxml
+configparser
+folium
+alembic
+urllib3
+matplotlib
