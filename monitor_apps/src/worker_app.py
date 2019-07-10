@@ -173,10 +173,10 @@ def weather_task():
     weather=wr.json()
     try:
         unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
+        ts = datetime.now()
+        expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
     except:
         print('none cache')
-    ts = datetime.now()
-    expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
     if expired < (ts - timedelta(minutes=60)):
         wind = weather['list'][0]['wind']['deg']
         if wind > 0.00 and wind <= 22.30:
@@ -305,7 +305,7 @@ def doc_downloader():
                     doc_insert = Doc(upl.a['href'], upl.a['title'], ts, "data/docs/" + upl.a['title'], 1)
                     session.add(doc_insert)
                     session.commit()
-                    #downloader("data/docs/", maior_site_uri + upl.a['href'], upl.a['title'])
+                    downloader("data/docs/", maior_site_uri + upl.a['href'], upl.a['title'])
                     print("working init ", maior_site_uri + upl.a['href'])
 
 
