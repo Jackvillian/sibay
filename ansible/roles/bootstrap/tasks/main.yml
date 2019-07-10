@@ -15,5 +15,5 @@
 - name: cloning project
   git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes
 - name: moving source projects
-  copy: remote_src=True src=/tmp/build/monitor_apps/src dest=/app/src
+  copy: remote_src=True src=/tmp/build/monitor_apps/src/ dest=/app/src/
 

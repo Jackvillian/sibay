@@ -25,13 +25,15 @@ services:
         - /app/data/:/usr/src/app/data
     links:
       - redis:redisdb
+      - mysql:mysqldb
 
   redis:
-    image: redis:{{redis_tag[0]}}
+    image: redis:latest
+
   mysql:
-    image: mysql:{{mysql_tag[0]}}
+    image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD= {{mysql_root[0]}}
-      - MYSQL_DATABASE = {{mysql_db[0]}}
-      - MYSQL_USER ={{mysql_user[0]}}
-      - MYSQL_PASSWORD = {{mysql_password[0]}}
+      - MYSQL_ROOT_PASSWORD={{mysql_root[0]}}
+      - MYSQL_DATABASE={{mysql_db[0]}}
+      - MYSQL_USER={{mysql_user[0]}}
+      - MYSQL_PASSWORD={{mysql_password[0]}}

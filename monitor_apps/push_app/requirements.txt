@@ -6,3 +6,5 @@ redis
 skyfield
 configparser
 pytz
+pymysql
+sqlalchemy

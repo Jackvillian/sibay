@@ -8,3 +8,5 @@ configparser
 geopy
 sqlalchemy
 pytz
+pymysql
+bs4
