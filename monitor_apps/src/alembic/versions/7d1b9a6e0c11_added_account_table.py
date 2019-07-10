@@ -1,8 +1,8 @@
-"""add docs table
+"""Added account table
 
-Revision ID: 0224945830d6
-Revises: 7ca0356a8dda
-Create Date: 2019-07-06 00:21:35.519593
+Revision ID: 7d1b9a6e0c11
+Revises: 
+Create Date: 2019-07-10 23:57:01.101174
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0224945830d6'
-down_revision = '7ca0356a8dda'
+revision = '7d1b9a6e0c11'
+down_revision = None
 branch_labels = None
 depends_on = None
 

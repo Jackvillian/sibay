@@ -5,6 +5,7 @@ config_path=os.path.join(os.path.dirname(__file__), '../config.ini')
 config.read(config_path)
 from sqlalchemy import create_engine
 mydb='mysql+pymysql://'+config.get('mysql','user')+':'+config.get('mysql','password')+'@'+config.get('mysql','host')+'/'+config.get('mysql','db')
+print(mydb)
 engine = create_engine(mydb, pool_recycle=3600)
 from sqlalchemy import Table, Column, Integer, String, MetaData,DateTime,Sequence,Boolean
 from sqlalchemy.sql import func
