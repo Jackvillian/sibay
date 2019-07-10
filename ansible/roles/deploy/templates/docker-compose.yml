@@ -27,7 +27,7 @@ services:
     links:
       - redisdb:redisdb
       - mysqldb:mysqldb
-    command: alembic revision --autogenerate -m "Added account table" && alembic upgrade head
+    command: alembic upgrade head
 
   redisdb:
     image: redis:latest
