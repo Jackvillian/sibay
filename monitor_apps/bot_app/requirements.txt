@@ -10,3 +10,11 @@ sqlalchemy
 pytz
 pymysql
 bs4
+PySocks
+redis
+numpy
+pytz
+lxml
+urllib3
+matplotlib
+folium

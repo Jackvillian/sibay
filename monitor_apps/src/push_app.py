@@ -59,7 +59,7 @@ def callback_weather_6_hours(context):
     messagetext=weather_task.delay()
     messagetext=messagetext.get(timeout=300)
     print(messagetext)
-    #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
     messagetext="*узнать погоду можно при помощи бота t.me/air_sibay_bot\n\r"
     # context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 

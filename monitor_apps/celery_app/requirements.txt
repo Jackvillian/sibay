@@ -9,10 +9,11 @@ python-telegram-bot==12.0.0b1
 configparser
 pymysql
 sqlalchemy
-bs4
 lxml
 configparser
-folium
-alembic
+PySocks
 urllib3
 matplotlib
+bs4
+PySocks
+folium

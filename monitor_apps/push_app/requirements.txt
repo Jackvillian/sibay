@@ -5,6 +5,16 @@ celery>=4.2.2
 redis
 skyfield
 configparser
+geopy
+sqlalchemy
 pytz
 pymysql
-sqlalchemy
+bs4
+PySocks
+redis
+numpy
+pytz
+lxml
+urllib3
+matplotlib
+folium
