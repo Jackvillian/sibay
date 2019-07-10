@@ -7,7 +7,8 @@ services:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
-      - redis:redisdb
+      - redisdb:redisdb
+      - mysqldb:mysqldb
 
   bot_app:
     image: jacvmos/bot_app:{{tag[0]}}
@@ -15,8 +16,8 @@ services:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
-      - redis:redisdb
-      - mysql:mysqldb
+      - redisdb:redisdb
+      - mysqldb:mysqldb
 
   messenger_worker:
     image: jacvmos/celery_app:{{tag[0]}}
@@ -24,13 +25,13 @@ services:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
-      - redis:redisdb
-      - mysql:mysqldb
+      - redisdb:redisdb
+      - mysqldb:mysqldb
 
-  redis:
+  redisdb:
     image: redis:latest
 
-  mysql:
+  mysqldb:
     image: mysql:latest
     environment:
       - MYSQL_ROOT_PASSWORD={{mysql_root[0]}}
