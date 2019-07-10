@@ -39,3 +39,7 @@ services:
       - MYSQL_DATABASE={{mysql_db[0]}}
       - MYSQL_USER={{mysql_user[0]}}
       - MYSQL_PASSWORD={{mysql_password[0]}}
+    volumes:
+      - /app/data/mysql:/var/lib/mysql
+volumes:
+  my-datavolume:

@@ -3,18 +3,11 @@
 - name: create configs
   template: src=templates/config.ini dest=/app/src/config.ini
 
-- name: pulling images
-  shell: docker pull {{item}}:{{tag[0]}}
-  with_items:
-      - jacvmos/bot_app
-      - jacvmos/push_app
-      - jacvmos/celery_app
-
 - name: create composer
   template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml
-- name: removing old containers
-  shell: cd /tmp/build/ && docker-compose down
+#- name: removing old containers
+#  shell: cd /tmp/build/ && docker-compose down
 - name: create containers
   shell: cd /tmp/build/ && docker-compose up -d
-- name: removing old imges
-  shell: docker images -q |xargs docker rmi
+#- name: removing old imges
+#  shell: docker images -q |xargs docker rmi
