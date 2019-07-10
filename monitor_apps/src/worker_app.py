@@ -172,7 +172,7 @@ def weather_task():
                       params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
     weather=wr.json()
 
-    unpacked_weater = json.loads(r.get('weather_cache').decode("utf8"))
+    unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
     ts = datetime.now()
     expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
     if expired < (ts - timedelta(minutes=60)):
