@@ -20,5 +20,5 @@
       raw: test -e /usr/bin/python || (apt-get update && apt-get install -y python2)
 
   roles:
-     - {role: bootstrap, tags: ['install', 'bootstrap']}
+     #- {role: bootstrap, tags: ['install', 'bootstrap']}
      - {role: deploy, tags: ['install','deploy']}

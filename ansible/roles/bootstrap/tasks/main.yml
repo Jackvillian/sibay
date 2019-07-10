@@ -1,19 +1,1 @@
----
-- name: Set authorized key
-  authorized_key:
-    user: root
-    state: present
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-- name: creating app dirs
-  file: path={{item}} state=directory mode=0777 recurse=yes
-  with_items:
-    - /app/data/docs
-    - /app/data/maps
-    - /app/data/images
-    - /app/data/graph
-    - /app/src
-- name: cloning project
-  git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes
-- name: moving source projects
-  copy: remote_src=True src=/tmp/build/monitor_apps/src/ dest=/app/src/ force=yes
 
