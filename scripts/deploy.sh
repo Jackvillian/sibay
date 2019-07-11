@@ -4,12 +4,11 @@ Tag=$2
 case $mode in
     docker)
           echo "building"
-          cd monitor_apps/scripts/
           sh build.sh $Tag
           ;;
     release)
           echo "creating release"
-          cd ../../
+          cd ../
           branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
           git checkout release
           git fetch
@@ -20,7 +19,7 @@ case $mode in
           ;;
     deploy)
           echo "deploying"
-          cd ../../ansible
+          cd ../ansible
           cat /dev/null > vars/tags.yml
           echo "---" >> vars/tags.yml
           echo "tag: $Tag" >> vars/tags.yml
