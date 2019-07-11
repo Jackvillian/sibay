@@ -12,6 +12,6 @@ echo "building"
 cd monitor_apps/scripts/
 sh build.sh $Tag
 cd ../../ansible
-ansible-playbook deploy.yml --extra-vars "tag=$Tag -i inventory/hosts"
+ansible-playbook deploy.yml --extra-vars "tag=$Tag" -i inventory/hosts
 echo "deploy done"
 echo $TAG >> Versions.txt
