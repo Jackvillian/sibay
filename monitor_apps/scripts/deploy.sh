@@ -16,6 +16,7 @@ case $mode in
           git merge $branch
           git tag -a v$Tag -m 'app release'
           git push origin release
+          git checkout $branch
           ;;
     deploy)
           echo "deploying"

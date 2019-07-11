@@ -2,7 +2,7 @@ version: '2'
 services:
 
   push_app:
-    image: jacvmos/push_app:{{tag[0]}}
+    image: jacvmos/push_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
@@ -13,7 +13,7 @@ services:
       - mysqldb
 
   bot_app:
-    image: jacvmos/bot_app:{{tag[0]}}
+    image: jacvmos/bot_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
@@ -24,7 +24,7 @@ services:
       - mysqldb
 
   messenger_worker:
-    image: jacvmos/celery_app:{{tag[0]}}
+    image: jacvmos/celery_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
