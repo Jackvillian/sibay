@@ -176,7 +176,6 @@ def weather_task():
         print("cache exist")
         unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
         expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
-        #or r.exists('weather_cache') == False
         if expired < (ts - timedelta(minutes=60)):
             wind = weather['list'][0]['wind']['deg']
             if wind > 0.00 and wind <= 22.30:
@@ -214,9 +213,9 @@ def weather_task():
             presure_mm = float(weather['list'][0]['main']['pressure']) * float(0.750063755419211)
             weather_value = [{'presure': presure_mm, 'temp': str(weather['list'][0]['main']['temp']), 'humidity': str(weather['list'][0]['main']['humidity']), 'wind_speed': str(weather['list'][0]['wind']['speed']) , 'wind': wind_comp},{'expire': str(ts)}]
             weather_value = json.dumps(weather_value)
-            r.set('weather_cache', weather_value)
+            r.set('123weather_cache', weather_value)
             result_msg = "*Погода Cибай*\n\rТемпература: " + str(weather['list'][0]['main']['temp']) + "\n\rВлажность: " +str(weather['list'][0]['main']['humidity'])+ "\n\rДавление: " + str(round(presure_mm, 2)) + "\n\rВетер: ``` \n\r направление: " + wind_comp+ " \n\r скорость: " + str(weather['list'][0]['wind']['speed']) + "\n\r```"
-            print("weather no cache")
+            print("weather update cache")
             return result_msg
 
         else:
@@ -270,7 +269,7 @@ def weather_task():
             weather['list'][0]['main']['humidity']) + "\n\rДавление: " + str(
             round(presure_mm, 2)) + "\n\rВетер: ``` \n\r направление: " + wind_comp + " \n\r скорость: " + str(
             weather['list'][0]['wind']['speed']) + "\n\r```"
-        print("weather no cache")
+        print("weather create cache")
         return result_msg
 
 @app.task
