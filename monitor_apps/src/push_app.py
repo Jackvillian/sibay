@@ -88,11 +88,11 @@ def callback_maps_3_hours(context):
 
 
 
-job_hour = jobq.run_repeating(callback_maps_3_hours, interval=300, first=0)
-job_hour = jobq.run_repeating(callback_docs_1_hours, interval=300, first=0)
+job_hour = jobq.run_repeating(callback_maps_3_hours, interval=10800, first=0)
+job_hour = jobq.run_repeating(callback_docs_1_hours, interval=3600, first=0)
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
 job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
-#job_hours = jobq.run_repeating(callback_weather_6_hours, interval=7200, first=0)
+job_hours = jobq.run_repeating(callback_weather_6_hours, interval=21600, first=0)
 
 print("push_app is started...")
 updater.start_polling()
