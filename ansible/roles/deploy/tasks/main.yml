@@ -14,7 +14,7 @@
     - /app/data/mysql
     - /app/src
 - name: cloning project
-  git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes
+  git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes version=release
 
 - name: moving source projects
   copy: remote_src=True src=/tmp/build/monitor_apps/src/ dest=/app/src/ force=yes
