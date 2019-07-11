@@ -13,6 +13,7 @@
     - /app/data/graph
     - /app/data/mysql
     - /app/src
+    - /app/config
 - name: cloning project
   git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes version=release
 
