@@ -172,14 +172,13 @@ def weather_task():
                       params={'q': s_city, 'type': 'like', 'units': 'metric', 'APPID': appid})
     weather=wr.json()
     ts = datetime.now()
-    cache=1
-    if redis.exists('weather_cache'):
+    if r.exists('weather_cache'):
+        print("cache exist")
         unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
         expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
     else:
         expired=ts + timedelta(minutes=61)
-        cache=0
-    if expired < (ts - timedelta(minutes=60)) and cache == 1:
+    if expired < (ts - timedelta(minutes=60)) or r.exists('weather_cache') == False:
         wind = weather['list'][0]['wind']['deg']
         if wind > 0.00 and wind <= 22.30:
           wind_comp = "С-С-В"
