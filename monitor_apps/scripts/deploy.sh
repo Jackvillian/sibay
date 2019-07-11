@@ -11,7 +11,7 @@ git push origin release
 echo "building"
 cd monitor_apps/scripts/
 sh build.sh $Tag
-
-
-#cd ../ansible
-#ansible-playbook deploy.yml --extra-vars "tag=$Tag"
+cd ../../ansible
+ansible-playbook deploy.yml --extra-vars "tag=$Tag"
+echo "deploy done"
+echo $TAG >> Versions.txt
