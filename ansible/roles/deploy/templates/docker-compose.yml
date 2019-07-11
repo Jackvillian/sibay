@@ -31,7 +31,6 @@ services:
     links:
       - redisdb:redisdb
       - mysqldb:mysqldb
-    #command: alembic upgrade head
     depends_on:
       - mysqldb
 
@@ -48,6 +47,7 @@ services:
       - MYSQL_PASSWORD={{mysql_password[0]}}
     volumes:
       - /app/data/mysql:/var/lib/mysql
+      - /app/config/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
 
 volumes:
   my-datavolume:

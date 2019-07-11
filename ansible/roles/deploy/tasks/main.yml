@@ -24,6 +24,9 @@
 - name: create alembic.ini
   template: src=templates/alembic.ini dest=/app/src/alembic.ini
 
+- name: create config mysql
+  template: src=templates/mycustom.cnf dest=/app/config/mycustom.cnf
+
 - name: create composer
   template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml
 
