@@ -176,53 +176,101 @@ def weather_task():
         print("cache exist")
         unpacked_weater = json.loads(r.get('weather_cache').decode('utf8'))
         expired=datetime.strptime(unpacked_weater[1]['expire'], '%Y-%m-%d %H:%M:%S.%f')
+        #or r.exists('weather_cache') == False
+        if expired < (ts - timedelta(minutes=60)):
+            wind = weather['list'][0]['wind']['deg']
+            if wind > 0.00 and wind <= 22.30:
+                wind_comp = "С-С-В"
+            if wind > 22.30 and wind <= 45.0:
+                wind_comp = "С-В"
+            if wind > 45.0 and wind <= 67.30:
+                wind_comp = "В-В-С"
+            if wind > 67.30 and wind <= 90.0:
+                wind_comp = "В"
+            if wind > 90.0 and wind <= 112.30:
+                wind_comp = "В-Ю-В"
+            if wind > 112.30 and wind <= 135.0:
+                wind_comp = "Ю-В"
+            if wind > 135.0 and wind <= 157.30:
+                wind_comp = "Ю-Ю-В"
+            if wind > 157.30 and wind <= 180:
+                 wind_comp = "Ю"
+            if wind > 180.0 and wind <= 202.30:
+                wind_comp = "Ю-Ю-З"
+            if wind > 202.30 and wind <= 225.0:
+                wind_comp = "Ю-З"
+            if wind > 225.0 and wind <= 247.30:
+               wind_comp = "З-Ю-З"
+            if wind > 247.30 and wind <= 270.0:
+                wind_comp = "З"
+            if wind > 270.0 and wind <= 292.30:
+                wind_comp = "З-С-З"
+            if wind > 292.30 and wind <= 315.00:
+                wind_comp = "С-З"
+            if wind > 315.00 and wind <= 337.30:
+                wind_comp = "С-С-З"
+            if wind > 337.30 and wind <= 360.00:
+                wind_comp = "С"
+            presure_mm = float(weather['list'][0]['main']['pressure']) * float(0.750063755419211)
+            weather_value = [{'presure': presure_mm, 'temp': str(weather['list'][0]['main']['temp']), 'humidity': str(weather['list'][0]['main']['humidity']), 'wind_speed': str(weather['list'][0]['wind']['speed']) , 'wind': wind_comp},{'expire': str(ts)}]
+            weather_value = json.dumps(weather_value)
+            r.set('weather_cache', weather_value)
+            result_msg = "*Погода Cибай*\n\rТемпература: " + str(weather['list'][0]['main']['temp']) + "\n\rВлажность: " +str(weather['list'][0]['main']['humidity'])+ "\n\rДавление: " + str(round(presure_mm, 2)) + "\n\rВетер: ``` \n\r направление: " + wind_comp+ " \n\r скорость: " + str(weather['list'][0]['wind']['speed']) + "\n\r```"
+            print("weather no cache")
+            return result_msg
+
+        else:
+            print("weather using  cache")
+            result_msg="*Погода Cибай*\n\rТемпература: "+unpacked_weater[0]['temp']+"\n\rВлажность: "+unpacked_weater[0]['humidity']+"\n\rДавление: "+str(round(unpacked_weater[0]['presure'],2))+"\n\rВетер: ``` \n\r направление: "+unpacked_weater[0]['wind']+" \n\r скорость: "+unpacked_weater[0]['wind_speed']+"\n\r```"
+            return result_msg
     else:
-        expired=ts + timedelta(minutes=61)
-    if expired < (ts - timedelta(minutes=60)) or r.exists('weather_cache') == False:
+        print("cache not exist")
         wind = weather['list'][0]['wind']['deg']
         if wind > 0.00 and wind <= 22.30:
-          wind_comp = "С-С-В"
+            wind_comp = "С-С-В"
         if wind > 22.30 and wind <= 45.0:
-           wind_comp = "С-В"
+            wind_comp = "С-В"
         if wind > 45.0 and wind <= 67.30:
-           wind_comp = "В-В-С"
+            wind_comp = "В-В-С"
         if wind > 67.30 and wind <= 90.0:
-           wind_comp = "В"
+            wind_comp = "В"
         if wind > 90.0 and wind <= 112.30:
-           wind_comp = "В-Ю-В"
+            wind_comp = "В-Ю-В"
         if wind > 112.30 and wind <= 135.0:
-           wind_comp = "Ю-В"
+            wind_comp = "Ю-В"
         if wind > 135.0 and wind <= 157.30:
-           wind_comp = "Ю-Ю-В"
+            wind_comp = "Ю-Ю-В"
         if wind > 157.30 and wind <= 180:
-           wind_comp = "Ю"
+            wind_comp = "Ю"
         if wind > 180.0 and wind <= 202.30:
-           wind_comp = "Ю-Ю-З"
+            wind_comp = "Ю-Ю-З"
         if wind > 202.30 and wind <= 225.0:
-           wind_comp = "Ю-З"
+            wind_comp = "Ю-З"
         if wind > 225.0 and wind <= 247.30:
-           wind_comp = "З-Ю-З"
+            wind_comp = "З-Ю-З"
         if wind > 247.30 and wind <= 270.0:
-           wind_comp = "З"
+            wind_comp = "З"
         if wind > 270.0 and wind <= 292.30:
-           wind_comp = "З-С-З"
+            wind_comp = "З-С-З"
         if wind > 292.30 and wind <= 315.00:
-           wind_comp = "С-З"
+            wind_comp = "С-З"
         if wind > 315.00 and wind <= 337.30:
-           wind_comp = "С-С-З"
+            wind_comp = "С-С-З"
         if wind > 337.30 and wind <= 360.00:
-           wind_comp = "С"
+            wind_comp = "С"
         presure_mm = float(weather['list'][0]['main']['pressure']) * float(0.750063755419211)
-        weather_value = [{'presure': presure_mm, 'temp': str(weather['list'][0]['main']['temp']), 'humidity': str(weather['list'][0]['main']['humidity']), 'wind_speed': str(weather['list'][0]['wind']['speed']) , 'wind': wind_comp},{'expire': str(ts)}]
+        weather_value = [{'presure': presure_mm, 'temp': str(weather['list'][0]['main']['temp']),
+                          'humidity': str(weather['list'][0]['main']['humidity']),
+                          'wind_speed': str(weather['list'][0]['wind']['speed']), 'wind': wind_comp},
+                         {'expire': str(ts)}]
         weather_value = json.dumps(weather_value)
         r.set('weather_cache', weather_value)
-        result_msg = "*Погода Cибай*\n\rТемпература: " + str(weather['list'][0]['main']['temp']) + "\n\rВлажность: " +str(weather['list'][0]['main']['humidity'])+ "\n\rДавление: " + str(round(presure_mm, 2)) + "\n\rВетер: ``` \n\r направление: " + wind_comp+ " \n\r скорость: " + str(weather['list'][0]['wind']['speed']) + "\n\r```"
+        result_msg = "*Погода Cибай*\n\rТемпература: " + str(
+            weather['list'][0]['main']['temp']) + "\n\rВлажность: " + str(
+            weather['list'][0]['main']['humidity']) + "\n\rДавление: " + str(
+            round(presure_mm, 2)) + "\n\rВетер: ``` \n\r направление: " + wind_comp + " \n\r скорость: " + str(
+            weather['list'][0]['wind']['speed']) + "\n\r```"
         print("weather no cache")
-        return result_msg
-
-    else:
-        print("weather using  cache")
-        result_msg="*Погода Cибай*\n\rТемпература: "+unpacked_weater[0]['temp']+"\n\rВлажность: "+unpacked_weater[0]['humidity']+"\n\rДавление: "+str(round(unpacked_weater[0]['presure'],2))+"\n\rВетер: ``` \n\r направление: "+unpacked_weater[0]['wind']+" \n\r скорость: "+unpacked_weater[0]['wind_speed']+"\n\r```"
         return result_msg
 
 @app.task
