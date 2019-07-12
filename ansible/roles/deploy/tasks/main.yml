@@ -18,7 +18,7 @@
   git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes version={{branch}}
 
 - name: moving source projects
-  copy: remote_src=True src=/tmp/build/monitor_apps/src/ dest=/app/src/ force=yes
+  copy: remote_src=True src=/tmp/build/monitor_apps/ dest=/app/src/ force=yes
 
 - name: create config.ini
   template: src=templates/config.ini dest=/app/src/config.ini
@@ -26,7 +26,7 @@
   template: src=templates/alembic.ini dest=/app/src/alembic.ini
 
 - name: create config mysql
-  template: src=templates/mycustom.cnf dest=/app/config/mycustom.cnf
+  template: src=templates/mycustom.cnf dest=/app/config/mycustom.cnf mode=0440
 
 - name: create composer
   template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml
