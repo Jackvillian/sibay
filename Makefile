@@ -1,5 +1,5 @@
-IMGTAG=0.0.20
-PRJTAG=0.0.22
+IMGTAG=$(arg1)
+GITTAG=$(arg2)
 
 .PHONY:
 help:
@@ -37,6 +37,11 @@ docker_build:
 	@echo "tag: $(IMGTAG)" >> ansible/vars/tags.yml
 	@echo "created images tag $(IMGTAG)"
 
+.PHONY:
+release:
+	@echo ""
+	@echo "release ..."
+	@sh scripts/release.sh $(GITTAG)
 
 .PHONY:
 deploy_release:

@@ -140,7 +140,7 @@ def report(update, context):
     custom_keyboard = [[home_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
     context.bot.send_message(chat_id=update.message.chat_id,text="Результаты исследования проб воздуха(официальные данные)", reply_markup=reply_markup)
-    last_avail_docs = session.query(Doc).filter_by(archive='0').limit(3).all()
+    last_avail_docs = session.query(Doc).filter_by(archive='0').limit(10).all()
     for d in last_avail_docs:
         print(d.path)
         print(os.path.exists(d.path))
