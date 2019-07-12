@@ -1,5 +1,5 @@
-IMGTAG=$(arg1)
-GITTAG=$(arg2)
+IMGTAG=latest
+GITTAG=0.0.21
 
 .PHONY:
 help:
