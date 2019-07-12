@@ -5,6 +5,9 @@ case $mode in
     docker)
           echo "building"
           sh build.sh $Tag
+          cat /dev/null > vars/tags.yml
+          echo "---" >> vars/tags.yml
+          echo "tag: $Tag" >> vars/tags.yml
           ;;
     release)
           echo "creating release"
@@ -20,9 +23,7 @@ case $mode in
     deploy)
           echo "deploying"
           cd ../ansible
-          cat /dev/null > vars/tags.yml
-          echo "---" >> vars/tags.yml
-          echo "tag: $Tag" >> vars/tags.yml
+
           ansible-playbook deploy.yml  -i inventory/hosts
           ;;
 esac
