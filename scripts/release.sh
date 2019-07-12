@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-Tag=$2
+Tag=$1
 branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 git checkout release
 git fetch
