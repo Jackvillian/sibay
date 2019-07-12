@@ -17,3 +17,4 @@ matplotlib
 bs4
 PySocks
 folium
+alembic

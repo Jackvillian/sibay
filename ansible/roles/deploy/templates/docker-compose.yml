@@ -2,32 +2,38 @@ version: '2'
 services:
 
   push_app:
-    image: jacvmos/push_app:{{tag[0]}}
+    image: jacvmos/push_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
       - redisdb:redisdb
       - mysqldb:mysqldb
+    depends_on:
+      - mysqldb
 
   bot_app:
-    image: jacvmos/bot_app:{{tag[0]}}
+    image: jacvmos/bot_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
       - redisdb:redisdb
       - mysqldb:mysqldb
+    depends_on:
+      - mysqldb
 
   messenger_worker:
-    image: jacvmos/celery_app:{{tag[0]}}
+    image: jacvmos/celery_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app
         - /app/data/:/usr/src/app/data
     links:
       - redisdb:redisdb
       - mysqldb:mysqldb
-    command: alembic upgrade head
+    depends_on:
+      - mysqldb
+
 
   redisdb:
     image: redis:latest
@@ -41,5 +47,7 @@ services:
       - MYSQL_PASSWORD={{mysql_password[0]}}
     volumes:
       - /app/data/mysql:/var/lib/mysql
+      - /app/config/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+
 volumes:
   my-datavolume:

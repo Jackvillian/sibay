@@ -13,8 +13,9 @@
     - /app/data/graph
     - /app/data/mysql
     - /app/src
+    - /app/config
 - name: cloning project
-  git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes
+  git: repo=https://github.com/Jackvillian/sibay.git dest=/tmp/build force=yes version={{branch}}
 
 - name: moving source projects
   copy: remote_src=True src=/tmp/build/monitor_apps/src/ dest=/app/src/ force=yes
@@ -23,6 +24,9 @@
   template: src=templates/config.ini dest=/app/src/config.ini
 - name: create alembic.ini
   template: src=templates/alembic.ini dest=/app/src/alembic.ini
+
+- name: create config mysql
+  template: src=templates/mycustom.cnf dest=/app/config/mycustom.cnf
 
 - name: create composer
   template: src=templates/docker-compose.yml dest=/tmp/build/docker-compose.yml

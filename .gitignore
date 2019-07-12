@@ -1,7 +1,6 @@
 .idea/
 __pycache__/
-dev/
-monitor_apps/src/data/
-monitor_apps/src/config.ini
-monitor_apps/src/init.txt
-ansible/inventory/hosts
+monitor_apps/data/
+monitor_apps/config.ini
+monitor_apps/init.txt
+ansible/pass

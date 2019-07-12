@@ -3,8 +3,6 @@
   user: root
   become: yes
   vars:
-    tag:
-      - 0.0.4
     redis_tag:
       - latest
     mysql_tag:
@@ -14,6 +12,7 @@
 
   vars_files:
       - vars/secret.yml
+      - vars/tags.yml
 
   pre_tasks:
     - name: install python 2
