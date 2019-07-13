@@ -1,5 +1,9 @@
 IMGTAG=latest
+<<<<<<< HEAD
 GITTAG=0.0.23
+=======
+GITTAG=0.0.24
+>>>>>>> docker_fix
 
 .PHONY:
 help:
