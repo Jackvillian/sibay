@@ -11,6 +11,7 @@ services:
       - mysqldb:mysqldb
     depends_on:
       - mysqldb
+    restart: always
 
   bot_app:
     image: jacvmos/bot_app:{{tag}}
@@ -22,6 +23,7 @@ services:
       - mysqldb:mysqldb
     depends_on:
       - mysqldb
+    restart: always
 
   messenger_worker:
     image: jacvmos/celery_app:{{tag}}
@@ -33,10 +35,12 @@ services:
       - mysqldb:mysqldb
     depends_on:
       - mysqldb
+    restart: always
 
 
   redisdb:
     image: redis:latest
+    restart: always
 
   mysqldb:
     image: mysql:latest
@@ -48,6 +52,7 @@ services:
     volumes:
       - /app/data/mysql:/var/lib/mysql
       - /app/config/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+    restart: always
 
 volumes:
   my-datavolume:
