@@ -204,8 +204,12 @@ def status(update, context):
     context.bot.send_message(chat_id=update.message.chat_id, text=messagetext, reply_markup=reply_markup,parse_mode='MARKDOWN')
 
 
-def help():
-    pass
+def help(update, context):
+    home_keyboard = KeyboardButton(text="/home Вернуться в начало")
+    custom_keyboard = [[home_keyboard]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+    text_msg = "раздел пока еще не сформирован"
+    context.bot.send_message(chat_id=update.message.chat_id, text=text_msg, reply_markup=reply_markup)
 
 def cams(update, context):
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
