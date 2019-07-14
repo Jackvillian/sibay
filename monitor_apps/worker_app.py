@@ -280,6 +280,7 @@ def generate_map():
     H2S = 'Сероводород'
     SO2 = 'Диоксид серы'
     lgnsph = 'ЛИГНОСУЛЬФОНАТ'
+    session.expire_all()
     find_new_poins=session.query(Locations).filter_by(archive=0).all()
     ts = datetime.utcnow()
     tz = timezone('Asia/Yekaterinburg')
@@ -328,6 +329,7 @@ def generate_map():
 
 @app.task
 def doc_downloader():
+    session.expire_all()
     response = http.request('GET', maior_site)
     soup = BeautifulSoup(response.data, 'html.parser')
     upload_list = soup.find_all('span', {'class': 'news__info-value'}, 'a')

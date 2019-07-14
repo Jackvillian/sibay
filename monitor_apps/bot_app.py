@@ -55,6 +55,13 @@ def start(update, context):
         reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
         context.bot.send_message(chat_id=update.message.chat_id, text=text_message , reply_markup=reply_markup)
 
+def map(update, context):
+    new_keyboard = KeyboardButton(text="/new создать новую метку")
+    last_keyboard = KeyboardButton(text="/last  загрузить")
+    custom_keyboard = [[new_keyboard, last_keyboard]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+    text_message = "вы можете создать новую метку на карте или загрузить уже сгенерированую карту"
+    context.bot.send_message(chat_id=update.message.chat_id, text=text_message, reply_markup=reply_markup)
 
 def create_point(update, context):
     hcl_keyboard = KeyboardButton(text="#HCL")
