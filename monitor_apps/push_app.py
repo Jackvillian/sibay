@@ -23,6 +23,15 @@ def hello(bot, update):
     update.message.reply_text(
         'Hello {}'.format(update.message.from_user.first_name))
 
+def hour_to_sec(hours):
+    seconds=hours*3600.0
+    seconds=int(seconds)
+    return seconds
+
+def min_to_sec(minutes):
+    seconds=minutes*60.0
+    seconds=int(seconds)
+    return seconds
 
 def callback_every_1_minutes(context):
     sol = solar_time.delay()
@@ -88,11 +97,11 @@ def callback_maps_3_hours(context):
 
 
 
-job_hour = jobq.run_repeating(callback_maps_3_hours, interval=10800, first=0)
-job_hour = jobq.run_repeating(callback_docs_1_hours, interval=3600, first=0)
-job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=300, first=0)
-job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=300, first=0)
-job_hours = jobq.run_repeating(callback_weather_6_hours, interval=21600, first=0)
+job_hour = jobq.run_repeating(callback_maps_3_hours, interval=hour_to_sec(3), first=0)
+job_hour = jobq.run_repeating(callback_docs_1_hours, interval=hour_to_sec(1), first=0)
+job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=min_to_sec(5), first=0)
+job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=min_to_sec(5), first=0)
+job_hours = jobq.run_repeating(callback_weather_6_hours, interval=hour_to_sec(6), first=0)
 
 print("push_app is started...")
 updater.start_polling()

@@ -288,7 +288,7 @@ def generate_map():
     tsdate=datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
     for point in find_new_poins:
         db_ts = datetime.strptime(point.timestamp, '%Y-%m-%d %H:%M:%S')
-        if db_ts < (tsdate - timedelta(hours=24)):
+        if db_ts < (tsdate - timedelta(hours=6)):
             point.archive = 1
             session.commit()
 
@@ -369,7 +369,7 @@ def doc_downloader():
             print(startts,ts)
             for arch in find_docs_archive:
                 db_ts=datetime.strptime(arch.timestamp, '%Y-%m-%d %H:%M:%S')
-                if db_ts > startts and db_ts < startts:
+                if db_ts > startts and db_ts < stopts:
                     print("archive old docs")
                     arch.archive=1
                     session.commit()

@@ -70,7 +70,7 @@ def create_point(update, context):
     lgpt_keyboard = KeyboardButton(text="#lgnsph")
     custom_keyboard = [[hcl_keyboard, so2_keyboard, h2s_keyboard, lgpt_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
-    context.bot.send_message(chat_id=update.message.chat_id,text="чем по вашему пахнет:\n\rкнопка #HCL - Хлороводород (пахнет хлоркой)\n\rкнопка #SO2 - Диоксид Серы (пахнет женными спичками)\n\rкнопка #H2S - Сероводород (пахнет тухлыми яйцами)\n\rкнопка #lgnsph -  ЛИГНОСУЛЬФОНАТ (пахнет жаренными семечками)",reply_markup=reply_markup)
+    context.bot.send_message(chat_id=update.message.chat_id,text="чем, по вашему пахнет:\n\rкнопка #HCL - Хлороводород (пахнет хлоркой)\n\rкнопка #SO2 - Диоксид Серы (пахнет женными спичками)\n\rкнопка #H2S - Сероводород (пахнет тухлыми яйцами)\n\rкнопка #lgnsph -  ЛИГНОСУЛЬФОНАТ (пахнет жаренными семечками)",reply_markup=reply_markup)
 
 
 def req_location(update, context):
@@ -143,6 +143,7 @@ def resp_location(update, context):
 
 
 def report(update, context):
+    session.expire_all()
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
     custom_keyboard = [[home_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
