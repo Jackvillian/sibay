@@ -7,7 +7,7 @@ import sys
 import os
 import celery_config
 import configparser
-from worker_app import print_hello, sensors_task_SO2, sensors_task_HCL, weather_task, solar_time, doc_downloader, generate_map
+from worker_app import sensors_task_SO2, sensors_task_HCL, weather_task, get_map, get_doc
 
 
 
@@ -44,7 +44,7 @@ def callback_HCL_5_minutes(context):
     for message in sens:
         overload = float(message['value']) * 10
         if float(message['value']) >= 0.1:
-               context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+               #context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
                print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
@@ -55,7 +55,7 @@ def callback_SO2_5_minutes(context):
     for message in sens:
         overload = float(message['value']) * 2
         if float(message['value'])>= 0.6:
-            context.bot.send_message(chat_id='@AIR_sibay',text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+            #context.bot.send_message(chat_id='@AIR_sibay',text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
             print("*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
@@ -73,7 +73,7 @@ def callback_weather_6_hours(context):
     # context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 
 def callback_docs_1_hours(context):
-    doclist = doc_downloader.delay()
+    doclist = get_doc.s("call_push_app").delay()
     doclist = doclist.get(timeout=2700)
     if not doclist:
         print('empty no new documents')
@@ -87,13 +87,15 @@ def callback_docs_1_hours(context):
 
 
 def callback_maps_3_hours(context):
-    map = generate_map.delay()
+    map = get_map.s("call_push_app").delay()
     map = map.get(timeout=2700)
-    print(map)
     messagetext = "*Создана новая карта\n\r вы можете создавать метки при помощи бота t.me/air_sibay_bot"
-    #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
-    #context.bot.sendDocument(chat_id='@AIR_sibay', document=open(map, 'rb'))
-
+    if map is not None:
+        print(map)
+        #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+        #context.bot.sendDocument(chat_id='@AIR_sibay', document=open(map, 'rb'))
+    else:
+        print("empty no new maps")
 
 
 
@@ -101,7 +103,7 @@ job_hour = jobq.run_repeating(callback_maps_3_hours, interval=hour_to_sec(3), fi
 job_hour = jobq.run_repeating(callback_docs_1_hours, interval=hour_to_sec(1), first=0)
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=min_to_sec(5), first=0)
 job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=min_to_sec(5), first=0)
-job_hours = jobq.run_repeating(callback_weather_6_hours, interval=hour_to_sec(6), first=0)
+#job_hours = jobq.run_repeating(callback_weather_6_hours, interval=hour_to_sec(6), first=0)
 
 print("push_app is started...")
 updater.start_polling()

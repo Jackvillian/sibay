@@ -1,5 +1,5 @@
-IMGTAG=latest
-GITTAG=0.0.24
+IMGTAG=0.0.25
+GITTAG=0.0.25
 
 .PHONY:
 help:

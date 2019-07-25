@@ -10,7 +10,7 @@ services:
       - redisdb:redisdb
       - mysqldb:mysqldb
     depends_on:
-      - mysqldb
+      - celery_app
     restart: always
 
   bot_app:
@@ -22,10 +22,10 @@ services:
       - redisdb:redisdb
       - mysqldb:mysqldb
     depends_on:
-      - mysqldb
+      - celery_app
     restart: always
 
-  messenger_worker:
+  celery_app:
     image: jacvmos/celery_app:{{tag}}
     volumes:
         - /app/src:/usr/src/app

@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -e
-
-if [ "$1" = 'migrate' ]; then
-    cd /usr/src/app && alembic revision --autogenerate -m "Migrations"
-    cd /usr/src/app && alembic upgrade head
+if [[ ${MIGRATIONS}==1]];then
     echo "Execute Migrations ..."
-fi
-cd /usr/src/app && exec celery  -A worker_app worker -E
+    cd /usr/src/app && alembic upgrade head
+fi;
+/usr/bin/supervisord -n -c /etc/supervisor/supervisor.conf

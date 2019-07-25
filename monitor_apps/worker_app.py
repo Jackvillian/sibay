@@ -11,6 +11,7 @@ from skyfield import almanac
 from pytz import timezone
 from datetime import timedelta
 from datetime import datetime
+from geopy.geocoders import Nominatim
 import os
 import redis
 import json
@@ -27,13 +28,31 @@ config_path=os.path.join(os.path.dirname(__file__), 'config.ini')
 config.read(config_path)
 maior_site=config.get('maior_site','doc_url')
 maior_site_uri=config.get('maior_site','site')
-#REQUEST_KWARGS={
-#    'proxy_url': 'socks5://config.get('proxy','host'):config.get('proxy','port')',
-#    'urllib3_proxy_kwargs': {
-#        'username': 'config.get('proxy','user')',
-#        'password': 'config.get('proxy','password')',
-#    }
-#}
+geolocator = Nominatim(user_agent="sibay air monitoring")
+
+
+app.conf.beat_schedule = {
+    "document_check": {
+        "task": "worker_app.doc_downloader",
+        "schedule": crontab(minute="*/1")
+    },
+    "archive_documents": {
+        "task": "worker_app.archive_docs",
+        "schedule": crontab(hour="*/8")
+    },
+    "generate_maps": {
+        "task": "worker_app.generate_map",
+        "schedule": crontab(hour="*/3")
+    },
+    "archive_maps": {
+        "task": "worker_app.archive_maps",
+        "schedule": crontab(hour="*/1")
+    }
+
+}
+
+
+
 
 r = redis.StrictRedis(host=config.get('redis','host'), port=config.get('redis','port'), db=1)
 s_city = "Sibay,RU"
@@ -45,7 +64,11 @@ def downloader(path,url,name):
     with open(path+name, 'wb') as f:
         f.write(r.content)
 
-
+def localtime():
+    ts = datetime.utcnow()
+    tz = timezone('Asia/Yekaterinburg')
+    ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
+    return ts
 
 def auth():
     au=sess.post('https://api.owencloud.ru/v1/auth/open',json={"login":config.get('owencloud','user'),"password":config.get('owencloud','password')})
@@ -78,10 +101,6 @@ def get_params(device,auth):
     data = sess.post(urls,headers={'Content-Type':'application/json', 'Authorization': 'Bearer {}'.format(auth['token'])})
     return  data.json()['parameters']
 
-@app.task
-def print_hello():
-    print('hello there')
-    return("lol")
 
 @app.task
 def solar_time():
@@ -161,10 +180,8 @@ def sensors_task_SO2():
     r.set('so2_s', json_objects)
     return response_list_clear
 
-@app.task
-def dnn(f):
-    print(f)
-    print("dnn is work))))")
+
+
 
 @app.task
 def weather_task():
@@ -273,63 +290,191 @@ def weather_task():
         return result_msg
 
 @app.task
-def generate_map():
+def get_map(arg):
+    print("get_map",arg)
+    if arg == "call_push_app":
+        try:
+            maps = session.query(Maps).filter_by(archive=0, publish=0).all()
+            if maps is not None:
+                for map in maps:
+                    print(map.path)
+                    map.publish=1
+                    session.commit()
+                return map.path
+        except:
+            print("no new maps")
 
+    if arg == "call_bot_app":
+        try:
+            last_map = session.query(Maps).filter_by(archive=0).all()
+            for map in last_map:
+                print(map.path)
+            return map.path
+        except:
+            print('get map error')
+            session.close()
+
+@app.task
+def generate_map():
+    expire_point=6
     m = folium.Map(location=[config.get('geolocation', 'center_latitude'), config.get('geolocation', 'center_longitude')], zoom_start=config.get('geolocation', 'start_zoom'))
     HCL = 'Хлороводород'
     H2S = 'Сероводород'
     SO2 = 'Диоксид серы'
     lgnsph = 'ЛИГНОСУЛЬФОНАТ'
-    session.expire_all()
-    find_new_poins=session.query(Locations).filter_by(archive=0).all()
-    ts = datetime.utcnow()
-    tz = timezone('Asia/Yekaterinburg')
-    ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-    tsdate=datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
-    for point in find_new_poins:
-        db_ts = datetime.strptime(point.timestamp, '%Y-%m-%d %H:%M:%S')
-        if db_ts < (tsdate - timedelta(hours=6)):
-            point.archive = 1
-            session.commit()
-
+    ts = localtime()
+    tsdate = datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
+    try:
+        so2_stat = json.loads(r.get('so2_s').decode("utf8"))
+        for so2 in so2_stat:
+            i = so2['street'].split(" ")
+            if len(i) > 1:
+                street = "сибай " + i[0] + i[1]
+                location = geolocator.geocode(street)
+                print(location.latitude, location.longitude)
+                value=float(so2['value']) * 2
+                if value < 0:
+                    value=0.0
+                popup = '<i>Данные прибора: '+str(value) +'(ПДК) добавлено в ' + str(so2['time']).split(" ")[1] + '</i>'
+                folium.CircleMarker([location.latitude, location.longitude], radius=10, popup=popup, tooltip='прибор SO2', line_color='red',
+                    fill_color='red').add_to(m)
+    except:
+        print('no cached data')
+    try:
+        hcl_stat = json.loads(r.get('hcl_s').decode("utf8"))
+        for hcl in hcl_stat:
+            i = hcl['street'].split(" ")
+            if len(i) > 1:
+                street = "сибай " + i[0] + i[1]
+                location = geolocator.geocode(street)
+                print(location.latitude, location.longitude)
+                value = float(hcl['value']) * 2
+                if value < 0:
+                    value=0.0
+                popup = '<i>Данные прибора: ' + str(value) + '(ПДК) добавлено в ' + str(so2['time']).split(" ")[1] + '</i>'
+                folium.CircleMarker([location.latitude, location.longitude], radius=10, popup=popup, tooltip='прибор HCL',
+                                line_color='green',
+                                fill_color='green').add_to(m)
+    except:
+        print('no cached data')
     find_hcl_locations = session.query(Locations).filter_by(context='#HCL', archive=0).all()
-    for hcl_loc in find_hcl_locations:
-        popup='<i>метка пользователя по HCL добавлено в '+str(hcl_loc.timestamp).split(" ")[1]+'</i>'
-        folium.Marker([hcl_loc.latitude, hcl_loc.longitude], popup=popup, tooltip=HCL, icon=folium.Icon(color='green')).add_to(m)
+    if find_hcl_locations is not None:
+        for hcl_loc in find_hcl_locations:
+            popup='<i>метка пользователя по HCL добавлено в '+str(hcl_loc.timestamp).split(" ")[1]+'</i>'
+            folium.Marker([hcl_loc.latitude, hcl_loc.longitude], popup=popup, tooltip=HCL, icon=folium.Icon(color='green')).add_to(m)
+            db_ts = datetime.strptime(hcl_loc.timestamp, '%Y-%m-%d %H:%M:%S')
+            if db_ts < (tsdate - timedelta(hours=expire_point)):
+                hcl_loc.archive = 1
+                session.commit()
     find_h2s_locations = session.query(Locations).filter_by(context='#H2S', archive=0).all()
-    for h2s_loc in find_h2s_locations:
-        popup = '<i>метка пользователя по H2S добавлено в ' + str(h2s_loc.timestamp).split(" ")[1] + '</i>'
-        folium.Marker([h2s_loc.latitude, h2s_loc.longitude], popup=popup, tooltip=H2S,
+    if find_h2s_locations is not None:
+        for h2s_loc in find_h2s_locations:
+            popup = '<i>метка пользователя по H2S добавлено в ' + str(h2s_loc.timestamp).split(" ")[1] + '</i>'
+            folium.Marker([h2s_loc.latitude, h2s_loc.longitude], popup=popup, tooltip=H2S,
                       icon=folium.Icon(color='blue')).add_to(m)
+            db_ts = datetime.strptime(h2s_loc.timestamp, '%Y-%m-%d %H:%M:%S')
+            if db_ts < (tsdate - timedelta(hours=expire_point)):
+                h2s_loc.archive = 1
+                session.commit()
     find_so2_locations = session.query(Locations).filter_by(context='#SO2', archive=0).all()
-    for so2_loc in find_so2_locations:
-        popup = '<i>метка пользователя по SO2 добавлено в ' + str(so2_loc.timestamp).split(" ")[1] + '</i>'
-        folium.Marker([so2_loc.latitude, so2_loc.longitude], popup=popup, tooltip=SO2,
+    if find_so2_locations is not None:
+        for so2_loc in find_so2_locations:
+            popup = '<i>метка пользователя по SO2 добавлено в ' + str(so2_loc.timestamp).split(" ")[1] + '</i>'
+            folium.Marker([so2_loc.latitude, so2_loc.longitude], popup=popup, tooltip=SO2,
                       icon=folium.Icon(color='purple')).add_to(m)
+            db_ts = datetime.strptime(so2_loc.timestamp, '%Y-%m-%d %H:%M:%S')
+            if db_ts < (tsdate - timedelta(hours=expire_point)):
+                so2_loc.archive = 1
+                session.commit()
     find_lgnsph_locations = session.query(Locations).filter_by(context='#lgnsph', archive=0).all()
-    for lgnsph_loc in find_lgnsph_locations:
-        popup = '<i>метка пользователя по ЛИГНОСУЛЬФОНАТ добавлено в ' + str(lgnsph_loc.timestamp).split(" ")[1] + '</i>'
-        folium.Marker([lgnsph_loc.latitude, lgnsph_loc.longitude], popup=popup, tooltip=lgnsph,
+    if find_lgnsph_locations is not None:
+        for lgnsph_loc in find_lgnsph_locations:
+            popup = '<i>метка пользователя по ЛИГНОСУЛЬФОНАТ добавлено в ' + str(lgnsph_loc.timestamp).split(" ")[1] + '</i>'
+            folium.Marker([lgnsph_loc.latitude, lgnsph_loc.longitude], popup=popup, tooltip=lgnsph,
                       icon=folium.Icon(color='gray')).add_to(m)
-    archive_last_map = session.query(Maps).filter_by(archive=0).first()
-    if archive_last_map is not None:
-        archive_last_map.archive=1
-        session.commit()
-    ts = datetime.utcnow()
-    tz = timezone('Asia/Yekaterinburg')
-    ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-    path="data/maps/"+str(ts).replace(" ", "_")+"_map.html"
-    map_insert = Maps(path,ts,0)
+            db_ts = datetime.strptime(lgnsph_loc.timestamp, '%Y-%m-%d %H:%M:%S')
+            if db_ts < (tsdate - timedelta(hours=expire_point)):
+                lgnsph_loc.archive = 1
+                session.commit()
+    ts = localtime()
+    path = "data/maps/" + str(ts).replace(" ", "_") + "_map.html"
+    map_insert = Maps(path, ts, 0, 0)
     session.add(map_insert)
     session.commit()
     session.close()
     m.save(path)
     print('map generated...')
-    return path
+
+
+@app.task
+def archive_docs():
+    try:
+        find_docs_archive = session.query(Doc).filter_by(archive=0,publish=1).all()
+        ts = localtime()
+        tsdate = datetime.strptime(ts, '%Y-%m-%d %H:%M:%S')
+        if find_docs_archive is not None:
+            for arch in find_docs_archive:
+                print(arch.name)
+                db_ts = datetime.strptime(arch.timestamp, '%Y-%m-%d %H:%M:%S')
+                if db_ts < (tsdate - timedelta(hours=6)):
+                    print("archive old docs")
+                    arch.archive = 1
+                    session.commit()
+    except:
+        print("error archive docs")
+        session.close()
+
+
+@app.task
+def archive_maps():
+    try:
+        non_archive_last_map = session.query(Maps).filter_by(archive=0, publish=1).all()
+        if non_archive_last_map is not None:
+            for to_archive in non_archive_last_map:
+                to_archive.archive = 1
+                session.commit()
+            session.close()
+    except:
+        session.close()
+        print("archive map error")
+
+
+
+@app.task
+def get_doc(arg):
+    print("get_doc",arg)
+    if arg == "call_push_app":
+        try:
+            find_docs = session.query(Doc).filter_by(archive=0,publish=0).all()
+            docs=[]
+            if find_docs is not None:
+                for doc in find_docs:
+                    doc.publish=1
+                    session.commit()
+                    docs.append(doc.name)
+                print(docs)
+                session.close()
+                return docs
+        except:
+            print("get_doc error")
+            session.close()
+    if arg == "call_bot_app":
+        try:
+            find_docs = session.query(Doc).filter_by(archive=0).all()
+            docs = []
+            if find_docs is not None:
+                for doc in find_docs:
+                    docs.append(doc.path)
+                print(docs)
+                session.close()
+                return docs
+        except:
+            print("get_doc error")
+            session.close()
+
 
 @app.task
 def doc_downloader():
-    session.expire_all()
     response = http.request('GET', maior_site)
     soup = BeautifulSoup(response.data, 'html.parser')
     upload_list = soup.find_all('span', {'class': 'news__info-value'}, 'a')
@@ -339,45 +484,24 @@ def doc_downloader():
             find_docs = session.query(Doc).filter_by(name=upl.a['title']).first()
             if find_docs is None:
                 if os.path.exists('init.txt'):
-                    ts = datetime.utcnow()
-                    tz = timezone('Asia/Yekaterinburg')
-                    ts=ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-                    doc_insert = Doc(upl.a['href'], upl.a['title'],ts , "data/docs/"+upl.a['title'],0)
+                    ts = localtime()
+                    doc_insert = Doc(upl.a['href'], upl.a['title'],ts , "data/docs/"+upl.a['title'],0,0)
                     session.add(doc_insert)
                     session.commit()
                     downloader("data/docs/",maior_site_uri+upl.a['href'],upl.a['title'])
                     print("working ",maior_site_uri+upl.a['href'])
                     doc_list.append(upl.a['title'])
                 else:
-                    ts = datetime.utcnow()
-                    tz = timezone('Asia/Yekaterinburg')
-                    ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-                    doc_insert = Doc(upl.a['href'], upl.a['title'], ts, "data/docs/" + upl.a['title'], 1)
+                    ts = localtime()
+                    doc_insert = Doc(upl.a['href'], upl.a['title'], ts, "data/docs/" + upl.a['title'], 1,1)
                     session.add(doc_insert)
                     session.commit()
                     downloader("data/docs/", maior_site_uri + upl.a['href'], upl.a['title'])
                     print("working init ", maior_site_uri + upl.a['href'])
-
-
-        else:
-            find_docs_archive = session.query(Doc).filter_by(archive=0).all()
-            ts = datetime.utcnow()
-            tz = timezone('Asia/Yekaterinburg')
-            ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-            startts = datetime.strptime(ts, '%Y-%m-%d %H:%M:%S').replace(hour=0, minute=0, second=0)
-            stopts = datetime.strptime(ts, '%Y-%m-%d %H:%M:%S').replace(hour=0, minute=10, second=0)
-            print(startts,ts)
-            for arch in find_docs_archive:
-                db_ts=datetime.strptime(arch.timestamp, '%Y-%m-%d %H:%M:%S')
-                if db_ts > startts and db_ts < stopts:
-                    print("archive old docs")
-                    arch.archive=1
-                    session.commit()
     f = open('init.txt', 'tw', encoding='utf-8')
     f.close()
     session.close()
     print(doc_list)
-    return doc_list
 
 
 

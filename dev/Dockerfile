@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /var/log/supervisord && touch /var/log/supervisord/supervisor.log && chmod -R 777 /var/log/supervisord
 RUN touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock
 COPY supervisor.conf /etc/supervisor/supervisor.conf
-CMD [ "/bin/sh","/var/run/entrypoint.sh" ]
+ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisor/supervisor.conf

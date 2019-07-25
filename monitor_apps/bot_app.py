@@ -1,7 +1,7 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler,Filters
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from models.model import Base ,engine,User,Locations, Doc, Maps
-from worker_app import print_hello, sensors_task_SO2, sensors_task_HCL, weather_task, solar_time, status_devices
+from worker_app import sensors_task_SO2, sensors_task_HCL, weather_task, solar_time, status_devices,get_doc,get_map
 from geopy.distance import geodesic
 from sqlalchemy.orm import sessionmaker
 from pytz import timezone
@@ -32,8 +32,6 @@ dispatcher = updater.dispatcher
 
 
 def start(update, context):
-    #print(update)
-
     user_data=update.message.chat
     find_user=session.query(User).filter_by(userid=user_data['id'], chattype="private").first()
     session.close()
@@ -54,6 +52,8 @@ def start(update, context):
         text_message = "Привет новичек я помогу тебе разобраться !\n\rчтобы начать нажми: /home \n\r далее выбери раздел помощь"
         reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
         context.bot.send_message(chat_id=update.message.chat_id, text=text_message , reply_markup=reply_markup)
+
+
 
 def map(update, context):
     new_keyboard = KeyboardButton(text="/new создать новую метку")
@@ -76,10 +76,9 @@ def create_point(update, context):
 def req_location(update, context):
     user_data = update.message.chat
     r.set(user_data['id'],update.message.text )
+    r.expire(user_data['id'], 60)
     find_last = session.query(Locations).filter_by(userid=str(user_data['id']), archive=False).order_by(Locations.id.desc()).first()
     print("req location", user_data['id'])
-    print(find_last)
-    print("test none")
     if find_last is None:
         location_keyboard = KeyboardButton(text="Cоздать Метку", request_location=True)
         custom_keyboard = [[location_keyboard]]
@@ -116,50 +115,63 @@ def resp_location(update, context):
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
     last_map_keyboard = KeyboardButton(text="/last  загрузить предыдущую карту")
     custom_keyboard = [[home_keyboard, last_map_keyboard]]
-    print(update.message.location, r.get(user_data['id']).decode("utf-8"),user_data['id'])
-    geo_center = (config.get('geolocation','center_latitude'),config.get('geolocation','center_longitude') )
-    geo_user=(update.message.location.latitude,update.message.location.longitude)
-    distance=geodesic(geo_center, geo_user).kilometers
-
-    max_d=config.get('geolocation','max_distance')
-    print(distance,max_d)
-    if float(distance) > float(max_d):
-        reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
-        messagetext="Ух... как вы далеко забрались!\n\rК сожалению радиус меток "+config.get('geolocation','max_distance')+" км"
-        context.bot.send_message(chat_id=update.message.chat_id, text=messagetext, reply_markup=reply_markup)
-        print("distance to long ",user_data['id'], "distance", distance)
+    if r.exists(user_data['id']):
+        print(update.message.location, r.get(user_data['id']).decode("utf-8"),user_data['id'])
+        geo_center = (config.get('geolocation','center_latitude'),config.get('geolocation','center_longitude') )
+        geo_user=(update.message.location.latitude,update.message.location.longitude)
+        distance=geodesic(geo_center, geo_user).kilometers
+        max_d=config.get('geolocation','max_distance')
+        if float(distance) > float(max_d):
+            reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+            messagetext="Ух... как вы далеко забрались!\n\rК сожалению радиус меток "+config.get('geolocation','max_distance')+" км"
+            context.bot.send_message(chat_id=update.message.chat_id, text=messagetext, reply_markup=reply_markup)
+            print("distance to long ",user_data['id'], "distance", distance)
+        else:
+            print("catch point")
+            ts = datetime.utcnow()
+            tz = timezone('Asia/Yekaterinburg')
+            ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
+            print(ts)
+            db_loc = Locations(str(user_data['id']), str(update.message.location.longitude), str(update.message.location.latitude), str(ts) , str(r.get(user_data['id']).decode("utf-8")),0)
+            session.add(db_loc)
+            session.commit()
+            print("point writed for userid ",user_data['id'], "distance", distance)
+            reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+            context.bot.send_message(chat_id=update.message.chat_id, text="метка принята. Карта с вашей меткой будет опубликованна в основном канале", reply_markup=reply_markup)
     else:
-        print("catch point")
-        ts = datetime.utcnow()
-        tz = timezone('Asia/Yekaterinburg')
-        ts = ts.replace(tzinfo=timezone('UTC')).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S')
-        print(ts)
-        db_loc = Locations(str(user_data['id']), str(update.message.location.longitude), str(update.message.location.latitude), str(ts) , str(r.get(user_data['id']).decode("utf-8")),0)
-        session.add(db_loc)
-        session.commit()
-        print("point writed for userid ",user_data['id'], "distance", distance)
         reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
-        context.bot.send_message(chat_id=update.message.chat_id, text="метка принята. Карта с вашей меткой будет опубликованна в основном канале", reply_markup=reply_markup)
+        messagetext = "Упс! что то пошло не так, попробуйте снова позже"
+        context.bot.send_message(chat_id=update.message.chat_id, text=messagetext, reply_markup=reply_markup)
 
 
 def report(update, context):
-    session.expire_all()
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
     custom_keyboard = [[home_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
     context.bot.send_message(chat_id=update.message.chat_id,text="Результаты исследования проб воздуха(официальные данные)", reply_markup=reply_markup)
-    last_avail_docs = session.query(Doc).filter_by(archive='0').limit(10).all()
-    for d in last_avail_docs:
-        print(d.path)
-        print(os.path.exists(d.path))
-        context.bot.sendDocument(chat_id=update.message.chat_id, document=open(d.path, 'rb'))
-    if not last_avail_docs:
-        context.bot.send_message(chat_id=update.message.chat_id,
-                                 text="новых документов пока нет",
-                                 reply_markup=reply_markup)
+    doclist = get_doc.s("call_bot_app").delay()
+    doclist = doclist.get(timeout=2700)
+    if not doclist:
+        print('empty no new documents')
+        context.bot.send_message(chat_id=update.message.chat_id,text="новых документов пока нет",reply_markup=reply_markup)
+    else:
+        for msg in doclist:
+            context.bot.sendDocument(chat_id=update.message.chat_id, document=open(msg, 'rb'))
+
+
+def state(update, context):
+    status_keyboard = KeyboardButton(text="/sensors")
+    graph_keyboard = KeyboardButton(text="/graphs")
+    home_keyboard = KeyboardButton(text="/home")
+    custom_keyboard = [[status_keyboard, graph_keyboard,home_keyboard]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+    text_message ="/sensors текущее состояние датчиков \n\r/graph отчет ввиде графиков\n\r/home вернуться в начало"
+    context.bot.send_message(chat_id=update.message.chat_id, text=text_message, reply_markup=reply_markup)
+
+
 
 def home(update, context):
-    status_keyboard = KeyboardButton(text="/status")
+    status_keyboard = KeyboardButton(text="/state")
     weather_keyboard = KeyboardButton(text="/weather")
     camera_keyboard = KeyboardButton(text="/camera")
     map_keyboard = KeyboardButton(text="/map")
@@ -167,8 +179,7 @@ def home(update, context):
     help_keyboard = KeyboardButton(text="/help")
     custom_keyboard = [[status_keyboard, weather_keyboard, camera_keyboard, map_keyboard, generate_keyboard,help_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
-    text_message = "С помощью бота можно узнать:\n\rв каком состоянии сейчас общественные датчики: /status \n\rсводку погоды: /weather \n\rполучить ссылки на камеры установленные на бортах: /camera \n\r Также если вы почувствовали какой то запах вы можете создать собственную метку на карте и она будет опубликована: /map\n\r загрузить официальные результаты замеров: /report\n\r помощь /help "
-
+    text_message = "С помощью бота можно узнать:\n\rв каком состоянии сейчас общественные датчики: /state \n\rсводку погоды: /weather \n\rполучить ссылки на камеры установленные на бортах: /camera \n\r Также если вы почувствовали какой то запах вы можете создать собственную метку на карте и она будет опубликована: /map\n\r загрузить официальные результаты замеров: /report\n\r помощь /help "
     context.bot.send_message(chat_id=update.message.chat_id, text=text_message, reply_markup=reply_markup)
 
 def weather_resp(update, context):
@@ -179,7 +190,7 @@ def weather_resp(update, context):
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
     context.bot.send_message(chat_id=update.message.chat_id, text=messagetext2, reply_markup=reply_markup,parse_mode='MARKDOWN')
 
-def status(update, context):
+def sensors(update, context):
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
     custom_keyboard = [[home_keyboard]]
     messagetext="Последние полученные данные:"
@@ -221,25 +232,33 @@ def cams(update, context):
     messagetext = "Южный борт:"
     context.bot.send_message(chat_id=update.message.chat_id, text=messagetext)
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
-    context.bot.send_message(chat_id=update.message.chat_id, text=config.get('cams', 'cam_north'), reply_markup=reply_markup)
+    context.bot.send_message(chat_id=update.message.chat_id, text=config.get('cams', 'cam_south'), reply_markup=reply_markup)
 
-
+def graph(update, context):
+    home_keyboard = KeyboardButton(text="/home Вернуться в начало")
+    custom_keyboard = [[home_keyboard]]
+    reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
+    text_msg = "раздел пока еще не сформирован"
+    context.bot.send_message(chat_id=update.message.chat_id, text=text_msg, reply_markup=reply_markup)
 
 def last(update, context):
     home_keyboard = KeyboardButton(text="/home Вернуться в начало")
     custom_keyboard = [[home_keyboard]]
-    find_last_map = session.query(Maps).filter_by(archive=0).first()
+    map = get_map.s("call_bot_app").delay()
+    map = map.get(timeout=2700)
     messagetext = "последнее"
     reply_markup = ReplyKeyboardMarkup(custom_keyboard, resize_keyboard=True)
     context.bot.send_message(chat_id=update.message.chat_id, text=messagetext,reply_markup=reply_markup)
-    context.bot.sendDocument(chat_id=update.message.chat_id, document=open(find_last_map.path, 'rb'))
+    context.bot.sendDocument(chat_id=update.message.chat_id, document=open(map, 'rb'))
 
 
 
 
 start_handler = CommandHandler('start', start)
 new_handler = CommandHandler('new', create_point)
-status_handler = CommandHandler('status', status)
+sensors_handler = CommandHandler('sensors', sensors)
+state_handler = CommandHandler('state', state)
+graph_handler = CommandHandler('graph', graph)
 weather_handler=CommandHandler('weather', weather_resp)
 help_handler = CommandHandler('help', help)
 home_handler = CommandHandler('home', home)
@@ -257,8 +276,10 @@ dispatcher.add_handler(req_handler)
 dispatcher.add_handler(resp_handler)
 dispatcher.add_handler(map_handler)
 dispatcher.add_handler(start_handler)
-dispatcher.add_handler(status_handler)
+dispatcher.add_handler(sensors_handler)
+dispatcher.add_handler(state_handler)
 dispatcher.add_handler(help_handler)
+dispatcher.add_handler(graph_handler)
 dispatcher.add_handler(home_handler)
 dispatcher.add_handler(report_handler)
 print("bot_app is started ...")
