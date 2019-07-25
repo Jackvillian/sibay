@@ -35,6 +35,8 @@ services:
       - mysqldb:mysqldb
     depends_on:
       - mysqldb
+    environment:
+      - MIGRATE=1
     restart: always
 
 

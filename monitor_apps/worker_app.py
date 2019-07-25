@@ -34,7 +34,7 @@ geolocator = Nominatim(user_agent="sibay air monitoring")
 app.conf.beat_schedule = {
     "document_check": {
         "task": "worker_app.doc_downloader",
-        "schedule": crontab(minute="*/1")
+        "schedule": crontab(minute="*/30")
     },
     "archive_documents": {
         "task": "worker_app.archive_docs",

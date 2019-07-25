@@ -44,7 +44,7 @@ def callback_HCL_5_minutes(context):
     for message in sens:
         overload = float(message['value']) * 10
         if float(message['value']) >= 0.1:
-               #context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+               context.bot.send_message(chat_id='@AIR_sibay',text="*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
                print("*Опасность Превышение ПДК (Хлороводород) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
@@ -55,7 +55,7 @@ def callback_SO2_5_minutes(context):
     for message in sens:
         overload = float(message['value']) * 2
         if float(message['value'])>= 0.6:
-            #context.bot.send_message(chat_id='@AIR_sibay',text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
+            context.bot.send_message(chat_id='@AIR_sibay',text="*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ",parse_mode='MARKDOWN')
             print("*Внимание Превышение ПДК (Диоксид Серы) в " + str(round(overload,2)) + " раз !!!* \n\r" + message['street'] + "\n\r``` Текущее значение прибора:" + message['value'] + "\n\rВремя местное (Сибай):" + message['time'] + "``` ")
         else:
             pass
@@ -103,7 +103,7 @@ job_hour = jobq.run_repeating(callback_maps_3_hours, interval=hour_to_sec(3), fi
 job_hour = jobq.run_repeating(callback_docs_1_hours, interval=hour_to_sec(1), first=0)
 job_minute = jobq.run_repeating(callback_SO2_5_minutes, interval=min_to_sec(5), first=0)
 job_minute = jobq.run_repeating(callback_HCL_5_minutes, interval=min_to_sec(5), first=0)
-#job_hours = jobq.run_repeating(callback_weather_6_hours, interval=hour_to_sec(6), first=0)
+job_hours = jobq.run_repeating(callback_weather_6_hours, interval=hour_to_sec(6), first=0)
 
 print("push_app is started...")
 updater.start_polling()

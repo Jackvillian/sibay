@@ -7,7 +7,8 @@ RUN apt-get install -y build-essential python3.7 python3.7-dev python3-pip pytho
 COPY requirements.txt ./
 RUN pip3 install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
-RUN mkdir -p /var/log/supervisord && touch /var/log/supervisord/supervisor.log && chmod -R 777 /var/log/supervisord
+RUN mkdir -p /var/log/supervisord && touch /var/log/supervisord/supervisor.log && chmod -R 777 /var/log/supervisord && mkdir -p /etc/supervisor
 RUN touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock
 COPY supervisor.conf /etc/supervisor/supervisor.conf
+COPY entrypoint.sh /var/run/entrypoint.sh
 CMD [ "/bin/sh","/var/run/entrypoint.sh" ]
