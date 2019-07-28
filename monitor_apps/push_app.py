@@ -33,10 +33,6 @@ def min_to_sec(minutes):
     seconds=int(seconds)
     return seconds
 
-def callback_every_1_minutes(context):
-    sol = solar_time.delay()
-    sol = sol.get(timeout=100)
-    print(sol)
 
 def callback_HCL_5_minutes(context):
     sens = sensors_task_HCL.delay()
@@ -70,7 +66,7 @@ def callback_weather_6_hours(context):
     print(messagetext)
     context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
     messagetext="*узнать погоду можно при помощи бота t.me/air_sibay_bot\n\r"
-    # context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
 
 def callback_docs_1_hours(context):
     doclist = get_doc.s("call_push_app").delay()
@@ -83,7 +79,7 @@ def callback_docs_1_hours(context):
             messagetext=messagetext+msg+"\n\r"
         messagetext=messagetext+"\n\rзагрузить документы можно при помощи бота t.me/air_sibay_bot\n\r"
         print(messagetext)
-        #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
 
 
 def callback_maps_3_hours(context):
@@ -92,8 +88,8 @@ def callback_maps_3_hours(context):
     messagetext = "*Создана новая карта\n\r вы можете создавать метки при помощи бота t.me/air_sibay_bot"
     if map is not None:
         print(map)
-        #context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
-        #context.bot.sendDocument(chat_id='@AIR_sibay', document=open(map, 'rb'))
+        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+        context.bot.sendDocument(chat_id='@AIR_sibay', document=open(map, 'rb'))
     else:
         print("empty no new maps")
 

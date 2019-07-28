@@ -40,13 +40,12 @@ class Log(Base):
     timestamp_utc = Column(DateTime, default=datetime.utcnow)
 
 
-    def __init__(self,userid,step,timestamp_utc):
+    def __init__(self,userid,step):
         self.userid = userid
         self.step = step
-        self.timestamp_utc = timestamp_utc
 
     def __repr__(self):
-        return '{} {} {}'.format(self.userid,self.step ,self.timestamp_utc)
+        return '{} {}'.format(self.userid,self.step )
 
 
 class Blacklist(Base):

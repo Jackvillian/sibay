@@ -38,7 +38,7 @@ app.conf.beat_schedule = {
     },
     "archive_documents": {
         "task": "worker_app.archive_docs",
-        "schedule": crontab(hour="*/8")
+        "schedule": crontab(hour="*/6")
     },
     "generate_maps": {
         "task": "worker_app.generate_map",
@@ -110,8 +110,16 @@ def solar_time():
     bluffton = api.Topos('52.4143 N', '58.3816 E')
 
     tz = timezone('Asia/Yekaterinburg')
-    t0 = ts.utc(2019, 5, 5, 4)
-    t1 = ts.utc(2019, 5, 6, 4)
+    dtloc=datetime.strptime(localtime(), '%Y-%m-%d %H:%M:%S')
+    yy=dtloc.year
+    mm=dtloc.month
+    dd=dtloc.day
+    t0 = ts.utc(yy, mm, dd, 4)
+    dtdelta=datetime.strptime(localtime(), '%Y-%m-%d %H:%M:%S')+timedelta(days=1)
+    yy=dtdelta.year
+    mm=dtdelta.month
+    dd=dtdelta.day
+    t1 = ts.utc(yy, mm, dd, 4)
     t, y = almanac.find_discrete(t0, t1, almanac.sunrise_sunset(e, bluffton))
 
     dusk_utc = datetime.strptime(t.utc_iso()[0], '%Y-%m-%dT%H:%M:%SZ')
@@ -416,7 +424,7 @@ def archive_docs():
             for arch in find_docs_archive:
                 print(arch.name)
                 db_ts = datetime.strptime(arch.timestamp, '%Y-%m-%d %H:%M:%S')
-                if db_ts < (tsdate - timedelta(hours=6)):
+                if db_ts < (tsdate - timedelta(hours=10)):
                     print("archive old docs")
                     arch.archive = 1
                     session.commit()
