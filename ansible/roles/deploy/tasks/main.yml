@@ -20,6 +20,9 @@
 - name: moving source projects
   copy: remote_src=True src=/tmp/build/monitor_apps/ dest=/app/src/ force=yes
 
+- name: moving images projects
+  copy: remote_src=True src=/tmp/build/monitor_apps/data/images dest=/app/data/ force=yes directory_mode=yes
+
 - name: create config.ini
   template: src=templates/config.ini dest=/app/src/config.ini
 - name: create alembic.ini

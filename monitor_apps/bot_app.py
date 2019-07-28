@@ -324,7 +324,7 @@ def help_main(update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text=text_msg)
         text_msg = "Q: как часто обновляются данные \n\r A: данные от приборов запрашиваются раз в 5 минут \n\r официальные отчеты запрашиваются раз в 30 минут а затем ротируются раз в 10 часов \n\r карты создаются раз в 3 часа а затем ротируются раз в 6 часов"
         context.bot.send_message(chat_id=update.message.chat_id, text=text_msg)
-        text_msg = "/help вернуться в предидущее меню"
+        text_msg = "/help вернуться в предыдущее меню"
         context.bot.send_message(chat_id=update.message.chat_id, text=text_msg, reply_markup=reply_markup)
 
 def help_bot(update, context):
@@ -367,7 +367,7 @@ def help_bot(update, context):
         context.bot.send_message(chat_id=update.message.chat_id, text=text_msg)
         context.bot.sendPhoto(chat_id=update.message.chat_id, photo=open("data/images/ios/mute_ios.jpg", 'rb'))
         context.bot.sendPhoto(chat_id=update.message.chat_id, photo=open("data/images/android/mute_android.jpg", 'rb'))
-        text_msg = "/help вернуться в предидущее меню"
+        text_msg = "/help вернуться в предыдущее меню"
         context.bot.send_message(chat_id=update.message.chat_id, text=text_msg, reply_markup=reply_markup)
 
 
