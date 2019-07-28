@@ -64,9 +64,9 @@ def callback_weather_6_hours(context):
     messagetext=weather_task.delay()
     messagetext=messagetext.get(timeout=300)
     print(messagetext)
-    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
-    messagetext="*узнать погоду можно при помощи бота t.me/air_sibay_bot\n\r"
-    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext,parse_mode='MARKDOWN')
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+    messagetext="Узнать погоду можно при помощи бота t.me/air_sibay_bot\n\r"
+    context.bot.send_message(chat_id='@AIR_sibay', text=messagetext)
 
 def callback_docs_1_hours(context):
     doclist = get_doc.s("call_push_app").delay()
@@ -74,21 +74,21 @@ def callback_docs_1_hours(context):
     if not doclist:
         print('empty no new documents')
     else:
-        messagetext = "*Получены новые документы от\n\rмежведомственного оперативного штаба\n\r"
+        messagetext = "Получены новые документы от\n\rмежведомственного оперативного штаба\n\r"
         for msg in doclist:
             messagetext=messagetext+msg+"\n\r"
         messagetext=messagetext+"\n\rзагрузить документы можно при помощи бота t.me/air_sibay_bot\n\r"
         print(messagetext)
-        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext)
 
 
 def callback_maps_3_hours(context):
     map = get_map.s("call_push_app").delay()
     map = map.get(timeout=2700)
-    messagetext = "*Создана новая карта\n\r вы можете создавать метки при помощи бота t.me/air_sibay_bot"
+    messagetext = "Создана новая карта\n\r вы можете создавать метки при помощи бота t.me/air_sibay_bot"
     if map is not None:
         print(map)
-        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext, parse_mode='MARKDOWN')
+        context.bot.send_message(chat_id='@AIR_sibay', text=messagetext)
         context.bot.sendDocument(chat_id='@AIR_sibay', document=open(map, 'rb'))
     else:
         print("empty no new maps")
