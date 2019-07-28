@@ -1,7 +1,9 @@
 .DS_Store
 .idea/
 __pycache__/
-monitor_apps/data/
+monitor_apps/data/docs
+monitor_apps/data/maps
+monitor_apps/data/graph
 monitor_apps/config.ini
 monitor_apps/init.txt
 ansible/pass
