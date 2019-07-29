@@ -16,9 +16,9 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(40))
-    last_name = Column(String(40))
-    username = Column(String(40))
+    first_name = Column(String(140))
+    last_name = Column(String(140))
+    username = Column(String(140))
     userid = Column(String(10))
     chattype = Column(String(10))
 
